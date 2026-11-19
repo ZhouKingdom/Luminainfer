@@ -26,6 +26,9 @@ class Sequence:
         self.num_scheduled_tokens = 0
         self.is_prefill = True
         self.block_table = []
+        # --- 递归状态（linear attention，如 Qwen3.5）：状态缓存里的 slot 索引 ---
+        self.state_slot = None       # None 表示尚未分配；数值为 S_cache/conv_cache 的槽位
+        self.state_ready = False     # 该 slot 的状态是否已初始化（首轮 prefill 前需清零）
         # --- 采样参数（由 SamplingParams 完整快照而来，采样器每次按此解码）---
         self.temperature = sampling_params.temperature
         self.top_k = sampling_params.top_k
@@ -85,11 +88,13 @@ class Sequence:
     def __getstate__(self):
         last_state = self.last_token if not self.is_prefill else self.token_ids
         return (self.num_tokens, self.num_prompt_tokens, self.num_cached_tokens, self.num_scheduled_tokens, self.block_table, last_state,
-                self.temperature, self.top_k, self.top_p, self.repetition_penalty, self.greedy, self.seed, self.last_ran_seed)
+                self.temperature, self.top_k, self.top_p, self.repetition_penalty, self.greedy, self.seed, self.last_ran_seed,
+                self.state_slot, self.state_ready)
 
     def __setstate__(self, state):
         (self.num_tokens, self.num_prompt_tokens, self.num_cached_tokens, self.num_scheduled_tokens, self.block_table, last_state,
-         self.temperature, self.top_k, self.top_p, self.repetition_penalty, self.greedy, self.seed, self.last_ran_seed) = state
+         self.temperature, self.top_k, self.top_p, self.repetition_penalty, self.greedy, self.seed, self.last_ran_seed,
+         self.state_slot, self.state_ready) = state
         if isinstance(last_state, list):
             self.token_ids = last_state
             self.last_token = self.token_ids[-1]

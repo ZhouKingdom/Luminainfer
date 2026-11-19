@@ -193,6 +193,26 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
-# --- Docs: publish only the root README.md ---
-*.md
-!/README.md
+
+# Local models, credentials and benchmark runtime artifacts
+.env.*
+*.pem
+*.key
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.nsys-rep
+*.qdrep
+*.sqlite
+*.sqlite3
+*.ncu-rep
+*.pid
+*.lock
+*.zip
+/benchmarks/*/
+/benchmarks/*.json
+/benchmarks/*.jsonl
+/benchmarks/*.xml
+# Selected lightweight experiment reports are explicitly added to Git.

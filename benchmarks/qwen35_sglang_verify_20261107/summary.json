@@ -1,0 +1,562 @@
+{
+  "primary": [
+    {
+      "name": "full_tp2_c1",
+      "args": {
+        "tp": 2,
+        "capacity": 1,
+        "tokens": 32,
+        "repeats": 2,
+        "port": 2535,
+        "backend": "decode_equivalent",
+        "oracle": true,
+        "batch_draft": true,
+        "compare_fused_gdn": true,
+        "output": "benchmarks/qwen35_sglang_verify_20261107/full_tp2_c1"
+      },
+      "rates": {
+        "native_graph": {
+          "decode_tok_s": 32.94359378933981,
+          "e2e_tok_s": 28.759900220870943,
+          "exact": 8,
+          "proposed": 0,
+          "accepted": 0,
+          "repeat_decode_tok_s": [
+            32.90803338129448,
+            32.97923113364858
+          ]
+        },
+        "no_draft_graph": {
+          "decode_tok_s": 29.570811943389188,
+          "e2e_tok_s": 26.253914059046178,
+          "exact": 8,
+          "proposed": 0,
+          "accepted": 0,
+          "repeat_decode_tok_s": [
+            29.592845681880558,
+            29.54881099149978
+          ]
+        },
+        "oracle_graph": {
+          "decode_tok_s": 31.92341435912945,
+          "e2e_tok_s": 28.03048223382227,
+          "exact": 8,
+          "proposed": 240,
+          "accepted": 240,
+          "repeat_decode_tok_s": [
+            32.03610542409867,
+            31.81151332535957
+          ]
+        },
+        "mtp_batched_graph": {
+          "decode_tok_s": 25.187486891099752,
+          "e2e_tok_s": 22.837176052607717,
+          "exact": 8,
+          "proposed": 280,
+          "accepted": 204,
+          "repeat_decode_tok_s": [
+            25.289090647444787,
+            25.08669629276759
+          ]
+        },
+        "no_draft_fused_graph": {
+          "decode_tok_s": 30.011702584113273,
+          "e2e_tok_s": 26.58889844980313,
+          "exact": 8,
+          "proposed": 0,
+          "accepted": 0,
+          "repeat_decode_tok_s": [
+            30.05257817609396,
+            29.970938033825085
+          ]
+        },
+        "mtp_batched_fused_graph": {
+          "decode_tok_s": 26.367437199090652,
+          "e2e_tok_s": 23.7980953070514,
+          "exact": 8,
+          "proposed": 280,
+          "accepted": 204,
+          "repeat_decode_tok_s": [
+            26.356708522694536,
+            26.378174613404116
+          ]
+        },
+        "oracle_fused_graph": {
+          "decode_tok_s": 33.499951993897554,
+          "e2e_tok_s": 29.200098853221533,
+          "exact": 8,
+          "proposed": 240,
+          "accepted": 240,
+          "repeat_decode_tok_s": [
+            33.50034397236072,
+            33.499560024607156
+          ]
+        }
+      },
+      "mtp_fusion_gain_pct": 4.6846686733476695,
+      "mtp_vs_same_arithmetic_native_pct": -19.961867646562382,
+      "generations": 112,
+      "output_tokens": 3584
+    },
+    {
+      "name": "full_tp2_c4",
+      "args": {
+        "tp": 2,
+        "capacity": 4,
+        "tokens": 64,
+        "repeats": 2,
+        "port": 2537,
+        "backend": "decode_equivalent",
+        "oracle": true,
+        "batch_draft": true,
+        "compare_fused_gdn": true,
+        "output": "benchmarks/qwen35_sglang_verify_20261107/full_tp2_c4"
+      },
+      "rates": {
+        "native_graph": {
+          "decode_tok_s": 35.06583918185018,
+          "e2e_tok_s": 33.36888038691356,
+          "exact": 8,
+          "proposed": 0,
+          "accepted": 0,
+          "repeat_decode_tok_s": [
+            35.04407476346615,
+            35.087630650985744
+          ]
+        },
+        "no_draft_graph": {
+          "decode_tok_s": 33.81673803802043,
+          "e2e_tok_s": 32.24955633262701,
+          "exact": 8,
+          "proposed": 0,
+          "accepted": 0,
+          "repeat_decode_tok_s": [
+            33.76342155547967,
+            33.87022317309457
+          ]
+        },
+        "oracle_graph": {
+          "decode_tok_s": 34.75433348486933,
+          "e2e_tok_s": 33.06955051536156,
+          "exact": 8,
+          "proposed": 496,
+          "accepted": 496,
+          "repeat_decode_tok_s": [
+            34.74971330235208,
+            34.75895489611182
+          ]
+        },
+        "mtp_batched_graph": {
+          "decode_tok_s": 30.904237496248744,
+          "e2e_tok_s": 29.62078401561017,
+          "exact": 8,
+          "proposed": 544,
+          "accepted": 458,
+          "repeat_decode_tok_s": [
+            30.899701250244142,
+            30.908775074340607
+          ]
+        },
+        "no_draft_fused_graph": {
+          "decode_tok_s": 36.60841619537742,
+          "e2e_tok_s": 34.71840529809915,
+          "exact": 8,
+          "proposed": 0,
+          "accepted": 0,
+          "repeat_decode_tok_s": [
+            36.62381189865843,
+            36.59303343056834
+          ]
+        },
+        "mtp_batched_fused_graph": {
+          "decode_tok_s": 33.62529422348519,
+          "e2e_tok_s": 32.0424278776028,
+          "exact": 8,
+          "proposed": 544,
+          "accepted": 458,
+          "repeat_decode_tok_s": [
+            33.552654777581026,
+            33.69824887170029
+          ]
+        },
+        "oracle_fused_graph": {
+          "decode_tok_s": 38.04739434512363,
+          "e2e_tok_s": 35.9176915055437,
+          "exact": 8,
+          "proposed": 496,
+          "accepted": 496,
+          "repeat_decode_tok_s": [
+            37.99357667762755,
+            38.10136469368096
+          ]
+        }
+      },
+      "mtp_fusion_gain_pct": 8.804801372519666,
+      "mtp_vs_same_arithmetic_native_pct": -4.108114883246838,
+      "generations": 112,
+      "output_tokens": 7168
+    }
+  ],
+  "recurrence_only": [
+    {
+      "name": "final_tp2_c1",
+      "args": {
+        "tp": 2,
+        "capacity": 1,
+        "tokens": 32,
+        "repeats": 2,
+        "port": 2533,
+        "backend": "decode_equivalent",
+        "oracle": true,
+        "batch_draft": true,
+        "compare_fused_gdn": true,
+        "output": "benchmarks/qwen35_sglang_verify_20261107/final_tp2_c1"
+      },
+      "rates": {
+        "native_graph": {
+          "decode_tok_s": 32.91008716786187,
+          "e2e_tok_s": 29.082188592833823,
+          "exact": 8,
+          "proposed": 0,
+          "accepted": 0,
+          "repeat_decode_tok_s": [
+            32.84005122386266,
+            32.98042247293307
+          ]
+        },
+        "no_draft_graph": {
+          "decode_tok_s": 29.60392480506299,
+          "e2e_tok_s": 26.538960979711177,
+          "exact": 8,
+          "proposed": 0,
+          "accepted": 0,
+          "repeat_decode_tok_s": [
+            29.44338038538826,
+            29.766229608241485
+          ]
+        },
+        "oracle_graph": {
+          "decode_tok_s": 32.081191032915676,
+          "e2e_tok_s": 28.459513830164592,
+          "exact": 8,
+          "proposed": 240,
+          "accepted": 240,
+          "repeat_decode_tok_s": [
+            32.12926316847361,
+            32.03326253449832
+          ]
+        },
+        "mtp_batched_graph": {
+          "decode_tok_s": 25.543990529839835,
+          "e2e_tok_s": 23.34545662551283,
+          "exact": 8,
+          "proposed": 280,
+          "accepted": 204,
+          "repeat_decode_tok_s": [
+            25.53924246762738,
+            25.548740357827988
+          ]
+        },
+        "no_draft_fused_graph": {
+          "decode_tok_s": 29.628123215836922,
+          "e2e_tok_s": 26.584050781046855,
+          "exact": 8,
+          "proposed": 0,
+          "accepted": 0,
+          "repeat_decode_tok_s": [
+            29.62552491288193,
+            29.630721974599563
+          ]
+        },
+        "mtp_batched_fused_graph": {
+          "decode_tok_s": 26.110645350799263,
+          "e2e_tok_s": 23.813102400309468,
+          "exact": 8,
+          "proposed": 280,
+          "accepted": 204,
+          "repeat_decode_tok_s": [
+            26.10266647473704,
+            26.118629106204303
+          ]
+        },
+        "oracle_fused_graph": {
+          "decode_tok_s": 33.00166585604192,
+          "e2e_tok_s": 29.176102209468258,
+          "exact": 8,
+          "proposed": 240,
+          "accepted": 240,
+          "repeat_decode_tok_s": [
+            33.00442129777498,
+            32.99891087435785
+          ]
+        }
+      },
+      "mtp_fusion_gain_pct": 2.2183488531186013,
+      "mtp_vs_same_arithmetic_native_pct": -20.660661828032335,
+      "generations": 112,
+      "output_tokens": 3584
+    },
+    {
+      "name": "final_tp2_c4",
+      "args": {
+        "tp": 2,
+        "capacity": 4,
+        "tokens": 64,
+        "repeats": 2,
+        "port": 2532,
+        "backend": "decode_equivalent",
+        "oracle": true,
+        "batch_draft": true,
+        "compare_fused_gdn": true,
+        "output": "benchmarks/qwen35_sglang_verify_20261107/final_tp2_c4"
+      },
+      "rates": {
+        "native_graph": {
+          "decode_tok_s": 35.0853738556724,
+          "e2e_tok_s": 33.3998572379893,
+          "exact": 8,
+          "proposed": 0,
+          "accepted": 0,
+          "repeat_decode_tok_s": [
+            35.08660302688986,
+            35.084144770573786
+          ]
+        },
+        "no_draft_graph": {
+          "decode_tok_s": 33.73509834461035,
+          "e2e_tok_s": 32.17709672493663,
+          "exact": 8,
+          "proposed": 0,
+          "accepted": 0,
+          "repeat_decode_tok_s": [
+            33.849324042186346,
+            33.62164097131652
+          ]
+        },
+        "oracle_graph": {
+          "decode_tok_s": 34.67516315157722,
+          "e2e_tok_s": 33.023326833613275,
+          "exact": 8,
+          "proposed": 496,
+          "accepted": 496,
+          "repeat_decode_tok_s": [
+            34.749782184952764,
+            34.600863893988034
+          ]
+        },
+        "mtp_batched_graph": {
+          "decode_tok_s": 30.877857935466086,
+          "e2e_tok_s": 29.608905743548117,
+          "exact": 8,
+          "proposed": 544,
+          "accepted": 458,
+          "repeat_decode_tok_s": [
+            30.862289900675655,
+            30.89344168432223
+          ]
+        },
+        "no_draft_fused_graph": {
+          "decode_tok_s": 35.560160792280065,
+          "e2e_tok_s": 33.81863415945849,
+          "exact": 8,
+          "proposed": 0,
+          "accepted": 0,
+          "repeat_decode_tok_s": [
+            35.52027247102568,
+            35.60013880129915
+          ]
+        },
+        "mtp_batched_fused_graph": {
+          "decode_tok_s": 32.9365065887782,
+          "e2e_tok_s": 31.465785427377995,
+          "exact": 8,
+          "proposed": 544,
+          "accepted": 458,
+          "repeat_decode_tok_s": [
+            32.953343920994065,
+            32.919686453662585
+          ]
+        },
+        "oracle_fused_graph": {
+          "decode_tok_s": 37.2461020283712,
+          "e2e_tok_s": 35.30947705858155,
+          "exact": 8,
+          "proposed": 496,
+          "accepted": 496,
+          "repeat_decode_tok_s": [
+            37.248120749178504,
+            37.24408352636757
+          ]
+        }
+      },
+      "mtp_fusion_gain_pct": 6.6670708104643595,
+      "mtp_vs_same_arithmetic_native_pct": -6.124681115651798,
+      "generations": 112,
+      "output_tokens": 7168
+    }
+  ],
+  "batched_experimental": {
+    "name": "batched_tp2_c4",
+    "args": {
+      "tp": 2,
+      "capacity": 4,
+      "tokens": 64,
+      "repeats": 2,
+      "port": 2540,
+      "backend": "batched",
+      "oracle": false,
+      "batch_draft": true,
+      "compare_fused_gdn": true,
+      "output": "benchmarks/qwen35_sglang_verify_20261107/batched_tp2_c4"
+    },
+    "rates": {
+      "native_graph": {
+        "decode_tok_s": 120.68536894032398,
+        "e2e_tok_s": 100.05236356155291,
+        "exact": 8,
+        "proposed": 0,
+        "accepted": 0,
+        "repeat_decode_tok_s": [
+          120.66001145691553,
+          120.71073708405174
+        ]
+      },
+      "no_draft_graph": {
+        "decode_tok_s": 79.802022713639,
+        "e2e_tok_s": 70.5548545202345,
+        "exact": 8,
+        "proposed": 0,
+        "accepted": 0,
+        "repeat_decode_tok_s": [
+          79.76853660545657,
+          79.83553694795754
+        ]
+      },
+      "mtp_batched_graph": {
+        "decode_tok_s": 93.05462199556439,
+        "e2e_tok_s": 80.56792143396102,
+        "exact": 4,
+        "proposed": 546,
+        "accepted": 454,
+        "repeat_decode_tok_s": [
+          93.03604347409109,
+          93.07320793847109
+        ]
+      },
+      "no_draft_fused_graph": {
+        "decode_tok_s": 86.37124223159174,
+        "e2e_tok_s": 75.58174402075662,
+        "exact": 8,
+        "proposed": 0,
+        "accepted": 0,
+        "repeat_decode_tok_s": [
+          86.32927285868467,
+          86.41325243155426
+        ]
+      },
+      "mtp_batched_fused_graph": {
+        "decode_tok_s": 104.20877208534506,
+        "e2e_tok_s": 88.68770272749121,
+        "exact": 4,
+        "proposed": 546,
+        "accepted": 454,
+        "repeat_decode_tok_s": [
+          104.16955845771056,
+          104.24801524728282
+        ]
+      }
+    },
+    "mtp_fusion_gain_pct": 11.98666960391539,
+    "mtp_vs_same_arithmetic_native_pct": -13.652522256551414,
+    "generations": 80,
+    "output_tokens": 5120
+  },
+  "ordinary_actual": {
+    "decode_tok_s": 123.08142093797643,
+    "e2e_tok_s": 101.27093849296463,
+    "same_as_rowwise_reference": 4
+  },
+  "microbench": {
+    "contract": "isolated recurrence only; prepared identical FP32 q/k/v/g/beta; strided 48-layer TP2-shaped state; 3 reverse-order CUDA Graph timing rounds",
+    "rows": [
+      {
+        "capacity": 1,
+        "heads": 24,
+        "key_dim": 128,
+        "value_dim": 128,
+        "layer_stride": 18874368,
+        "window": [
+          2
+        ],
+        "exact": true,
+        "cuda_graph_milliseconds": {
+          "decode_loop": 0.009499675178077795,
+          "window_kernel": 0.004912419482547872
+        },
+        "three_rounds_ms": [
+          {
+            "decode_loop": 0.010906040881784488,
+            "window_kernel": 0.004913853716204177
+          },
+          {
+            "window_kernel": 0.004911453305309965,
+            "decode_loop": 0.0087988484362937
+          },
+          {
+            "decode_loop": 0.008794136216155195,
+            "window_kernel": 0.004911951426129473
+          }
+        ],
+        "speedup": 1.9338078134057681
+      },
+      {
+        "capacity": 4,
+        "heads": 24,
+        "key_dim": 128,
+        "value_dim": 128,
+        "layer_stride": 18874368,
+        "window": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "exact": true,
+        "cuda_graph_milliseconds": {
+          "decode_loop": 0.031822265195153646,
+          "window_kernel": 0.010679699527793301
+        },
+        "three_rounds_ms": [
+          {
+            "decode_loop": 0.03166755744797027,
+            "window_kernel": 0.01067805047089798
+          },
+          {
+            "window_kernel": 0.010675248244429676,
+            "decode_loop": 0.03188792981399931
+          },
+          {
+            "decode_loop": 0.03191130832349136,
+            "window_kernel": 0.010685799868052242
+          }
+        ],
+        "speedup": 2.9796966770776687
+      }
+    ]
+  },
+  "reference": {
+    "source": "/home/jhzhou/sft_prj/sglang",
+    "commit": "e2982985110fb432fd8ddba5f0147a5004fd03ab",
+    "files_sha256": {
+      "python/sglang/srt/layers/attention/linear/kernels/gdn_triton.py": "6e4658d40532c4112839302cb7c351125b38bffb27d11d7b9558540c9f32343e",
+      "python/sglang/kernels/ops/attention/linear/fused_sigmoid_gating_recurrent.py": "aa509a46e49f77c3db6b7921cf842a3d4c33df56ec0d83cf692e2059412c5c56",
+      "python/sglang/srt/layers/attention/linear/gdn_backend.py": "8a28ad3cdf24fe3121cfcec570b1ebf5518f77056ab6edc0f4f11cba8fefab7c",
+      "python/sglang/srt/models/qwen3_5_mtp.py": "13c9feb1674e28083cd7b3364040a2f1d9f0e8b10d1d6dc06156abe54a695c36",
+      "python/sglang/srt/speculative/eagle_worker_v2.py": "8db715dbc99b6043c138256a195132f099b7d603fd959556c6225099035dfb70",
+      "python/sglang/srt/models/qwen3_5.py": "6bcd4699cba9671f953be325eac21d82c99aae41cfdbe57be07443dfb9df068d"
+    },
+    "local_status": ""
+  },
+  "main_measured_generations": 320,
+  "main_measured_output_tokens": 16896
+}

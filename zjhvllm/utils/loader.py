@@ -18,6 +18,7 @@ def load_model(model: nn.Module, path: str, expert_start: int | None = None, exp
     专家（EP 模式下每卡只加载本地专家），并把专家 id 重映射到本地 index。
     """
     packed_modules_mapping = getattr(model, "packed_modules_mapping", {})
+    loaded_params = set()
     for file in glob(os.path.join(path, "*.safetensors")):
         with safe_open(file, "pt", "cpu") as f:
             for weight_name in f.keys():
@@ -30,6 +31,13 @@ def load_model(model: nn.Module, path: str, expert_start: int | None = None, exp
                         if not (expert_start <= e < expert_end):
                             continue  # 跳过其他 rank 的专家
                         weight_name = f"{m.group(1)}experts.{e - expert_start}.{m.group(3)}"
+                # 模型自定义权重名重映射（如 Qwen3.5 的 model.language_model.* 前缀剥离、
+                # 跳过 mtp.* 等非文本权重）。返回 None 表示跳过该权重。
+                remap = getattr(model, "remap_weight_name", None)
+                if remap is not None:
+                    weight_name = remap(weight_name)
+                    if weight_name is None:
+                        continue
                 for k in packed_modules_mapping:
                     if k in weight_name:
                         v, shard_id = packed_modules_mapping[k]
@@ -42,3 +50,9 @@ def load_model(model: nn.Module, path: str, expert_start: int | None = None, exp
                     param = model.get_parameter(weight_name)
                     weight_loader = getattr(param, "weight_loader", default_weight_loader)
                     weight_loader(param, f.get_tensor(original_name))
+                    loaded_params.add(weight_name)
+    required_mtp = {name for name, _ in model.named_parameters() if name.startswith("mtp.")}
+    if missing := required_mtp - loaded_params:
+        raise ValueError(f"Missing MTP checkpoint weights: {sorted(missing)}")
+    if required_mtp:
+        model.mtp.loaded_weight_names = frozenset(required_mtp)

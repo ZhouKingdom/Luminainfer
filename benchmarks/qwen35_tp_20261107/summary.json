@@ -1,0 +1,350 @@
+{
+  "validated": true,
+  "related_cuda_tests": 144,
+  "rows": [
+    {
+      "tp": 1,
+      "concurrency": 1,
+      "requests": 2,
+      "e2e_output_tok_s": 22.63171158046431,
+      "steady_output_tok_s": 22.94955591483335,
+      "max_decode_batch": 1,
+      "state_slots": 49,
+      "parameter_gib_per_rank": 50.09770107269287,
+      "graph_replays": 254
+    },
+    {
+      "tp": 1,
+      "concurrency": 32,
+      "requests": 64,
+      "e2e_output_tok_s": 417.50794651273594,
+      "steady_output_tok_s": 553.4591128447876,
+      "max_decode_batch": 32,
+      "state_slots": 49,
+      "parameter_gib_per_rank": 50.09770107269287,
+      "graph_replays": 256
+    },
+    {
+      "tp": 1,
+      "concurrency": 128,
+      "requests": 256,
+      "e2e_output_tok_s": 437.76467734479616,
+      "steady_output_tok_s": null,
+      "max_decode_batch": 49,
+      "state_slots": 49,
+      "parameter_gib_per_rank": 50.09770107269287,
+      "graph_replays": 510
+    },
+    {
+      "tp": 2,
+      "concurrency": 1,
+      "requests": 2,
+      "e2e_output_tok_s": 30.361220097900766,
+      "steady_output_tok_s": 31.54185415281984,
+      "max_decode_batch": 1,
+      "state_slots": 128,
+      "parameter_gib_per_rank": 27.417643070220947,
+      "graph_replays": 254
+    },
+    {
+      "tp": 2,
+      "concurrency": 32,
+      "requests": 64,
+      "e2e_output_tok_s": 456.51553519054806,
+      "steady_output_tok_s": 739.4503575536305,
+      "max_decode_batch": 32,
+      "state_slots": 128,
+      "parameter_gib_per_rank": 27.417643070220947,
+      "graph_replays": 256
+    },
+    {
+      "tp": 2,
+      "concurrency": 128,
+      "requests": 256,
+      "e2e_output_tok_s": 784.1819088774424,
+      "steady_output_tok_s": 1778.7283106648504,
+      "max_decode_batch": 128,
+      "state_slots": 128,
+      "parameter_gib_per_rank": 27.417643070220947,
+      "graph_replays": 268
+    },
+    {
+      "tp": 4,
+      "concurrency": 1,
+      "requests": 2,
+      "e2e_output_tok_s": 37.03046687765829,
+      "steady_output_tok_s": 38.81822820006533,
+      "max_decode_batch": 1,
+      "state_slots": 128,
+      "parameter_gib_per_rank": 16.077614068984985,
+      "graph_replays": 254
+    },
+    {
+      "tp": 4,
+      "concurrency": 32,
+      "requests": 64,
+      "e2e_output_tok_s": 516.8628564327039,
+      "steady_output_tok_s": 962.0375862812413,
+      "max_decode_batch": 32,
+      "state_slots": 128,
+      "parameter_gib_per_rank": 16.077614068984985,
+      "graph_replays": 256
+    },
+    {
+      "tp": 4,
+      "concurrency": 128,
+      "requests": 256,
+      "e2e_output_tok_s": 907.2629192714033,
+      "steady_output_tok_s": 2650.6863304474414,
+      "max_decode_batch": 128,
+      "state_slots": 128,
+      "parameter_gib_per_rank": 16.077614068984985,
+      "graph_replays": 268
+    },
+    {
+      "tp": 8,
+      "concurrency": 1,
+      "requests": 2,
+      "e2e_output_tok_s": 38.90784420316334,
+      "steady_output_tok_s": 40.9765577517805,
+      "max_decode_batch": 1,
+      "state_slots": 128,
+      "parameter_gib_per_rank": 10.446662068367004,
+      "graph_replays": 254
+    },
+    {
+      "tp": 8,
+      "concurrency": 32,
+      "requests": 64,
+      "e2e_output_tok_s": 554.8239815208209,
+      "steady_output_tok_s": 1107.2964611335694,
+      "max_decode_batch": 32,
+      "state_slots": 128,
+      "parameter_gib_per_rank": 10.446662068367004,
+      "graph_replays": 256
+    },
+    {
+      "tp": 8,
+      "concurrency": 128,
+      "requests": 256,
+      "e2e_output_tok_s": 959.3228381715642,
+      "steady_output_tok_s": 3207.781678719861,
+      "max_decode_batch": 128,
+      "state_slots": 128,
+      "parameter_gib_per_rank": 10.446662068367004,
+      "graph_replays": 268
+    }
+  ],
+  "graph_eager_parity": {
+    "1": [
+      {
+        "concurrency": 1,
+        "exact": 1,
+        "paired": 1
+      },
+      {
+        "concurrency": 32,
+        "exact": 32,
+        "paired": 32
+      },
+      {
+        "concurrency": 128,
+        "exact": 128,
+        "paired": 128
+      }
+    ],
+    "2": [
+      {
+        "concurrency": 1,
+        "exact": 1,
+        "paired": 1
+      },
+      {
+        "concurrency": 32,
+        "exact": 32,
+        "paired": 32
+      },
+      {
+        "concurrency": 128,
+        "exact": 128,
+        "paired": 128
+      }
+    ],
+    "4": [
+      {
+        "concurrency": 1,
+        "exact": 1,
+        "paired": 1
+      },
+      {
+        "concurrency": 32,
+        "exact": 32,
+        "paired": 32
+      },
+      {
+        "concurrency": 128,
+        "exact": 128,
+        "paired": 128
+      }
+    ],
+    "8": [
+      {
+        "concurrency": 1,
+        "exact": 1,
+        "paired": 1
+      },
+      {
+        "concurrency": 32,
+        "exact": 32,
+        "paired": 32
+      },
+      {
+        "concurrency": 128,
+        "exact": 128,
+        "paired": 128
+      }
+    ]
+  },
+  "all_logits_finite": true,
+  "all_resources_reclaimed": true,
+  "repeat_outputs_exact": true,
+  "cross_tp_greedy_comparison": [
+    {
+      "tp": 2,
+      "repeat": 0,
+      "concurrency": 1,
+      "exact": 1,
+      "paired": 1
+    },
+    {
+      "tp": 2,
+      "repeat": 0,
+      "concurrency": 32,
+      "exact": 32,
+      "paired": 32
+    },
+    {
+      "tp": 2,
+      "repeat": 0,
+      "concurrency": 128,
+      "exact": 67,
+      "paired": 128
+    },
+    {
+      "tp": 2,
+      "repeat": 1,
+      "concurrency": 128,
+      "exact": 67,
+      "paired": 128
+    },
+    {
+      "tp": 2,
+      "repeat": 1,
+      "concurrency": 32,
+      "exact": 32,
+      "paired": 32
+    },
+    {
+      "tp": 2,
+      "repeat": 1,
+      "concurrency": 1,
+      "exact": 1,
+      "paired": 1
+    },
+    {
+      "tp": 4,
+      "repeat": 0,
+      "concurrency": 1,
+      "exact": 1,
+      "paired": 1
+    },
+    {
+      "tp": 4,
+      "repeat": 0,
+      "concurrency": 32,
+      "exact": 32,
+      "paired": 32
+    },
+    {
+      "tp": 4,
+      "repeat": 0,
+      "concurrency": 128,
+      "exact": 68,
+      "paired": 128
+    },
+    {
+      "tp": 4,
+      "repeat": 1,
+      "concurrency": 128,
+      "exact": 68,
+      "paired": 128
+    },
+    {
+      "tp": 4,
+      "repeat": 1,
+      "concurrency": 32,
+      "exact": 32,
+      "paired": 32
+    },
+    {
+      "tp": 4,
+      "repeat": 1,
+      "concurrency": 1,
+      "exact": 1,
+      "paired": 1
+    },
+    {
+      "tp": 8,
+      "repeat": 0,
+      "concurrency": 1,
+      "exact": 1,
+      "paired": 1
+    },
+    {
+      "tp": 8,
+      "repeat": 0,
+      "concurrency": 32,
+      "exact": 32,
+      "paired": 32
+    },
+    {
+      "tp": 8,
+      "repeat": 0,
+      "concurrency": 128,
+      "exact": 66,
+      "paired": 128
+    },
+    {
+      "tp": 8,
+      "repeat": 1,
+      "concurrency": 128,
+      "exact": 66,
+      "paired": 128
+    },
+    {
+      "tp": 8,
+      "repeat": 1,
+      "concurrency": 32,
+      "exact": 32,
+      "paired": 32
+    },
+    {
+      "tp": 8,
+      "repeat": 1,
+      "concurrency": 1,
+      "exact": 1,
+      "paired": 1
+    }
+  ],
+  "cross_tp_note": "C128 TP1 has only 49 allocated slots; this mixes TP rounding and prefill scheduling, not a forced-same-history numerical test",
+  "source_snapshots_verified": true,
+  "contract": "output-only rates; fixed lengths, ignore EOS; E2E includes prefill; steady window requires all requests prefilled and active",
+  "current_execution_code_matches_snapshots_ignoring_docstrings": true,
+  "docstring_only_changes_since_capture": [
+    "zjhvllm/engine/model_runner.py",
+    "zjhvllm/models/qwen3_5.py"
+  ],
+  "measured_requests": 1288,
+  "measured_output_tokens": 164864,
+  "final_gpu_processes_empty": true
+}

@@ -1,0 +1,442 @@
+{
+  "cases": [
+    {
+      "name": "default_c1",
+      "args": {
+        "tp": 2,
+        "capacity": 1,
+        "tokens": 32,
+        "repeats": 2,
+        "port": 2543,
+        "backend": "decode_equivalent",
+        "oracle": false,
+        "batch_draft": false,
+        "compare_fused_gdn": false,
+        "mtp_steps": [
+          1,
+          2,
+          4
+        ],
+        "output": "benchmarks/qwen35_mtp_k_20261107/default_c1"
+      },
+      "rates": {
+        "native_graph": {
+          "decode_tok_s": 32.91704171179562,
+          "e2e_tok_s": 28.92558318745901,
+          "decode_seconds": 15.068182746879756,
+          "counts_rank0": {
+            "native_target_forwards": 496,
+            "native_target_rows": 496
+          },
+          "exact": 8,
+          "same_as_k1": 8,
+          "proposed": 0,
+          "accepted": 0,
+          "verification_request_rounds": 0,
+          "mean_emitted_per_request_round": null,
+          "target_forwards": 496,
+          "target_rows_per_output": 1.0,
+          "acceptance_by_depth": [],
+          "repeat_decode_tok_s": [
+            32.88472106203246,
+            32.949425956570884
+          ]
+        },
+        "no_draft_fused_graph": {
+          "decode_tok_s": 29.933677277686794,
+          "e2e_tok_s": 26.655649204447847,
+          "decode_seconds": 16.56996550736949,
+          "counts_rank0": {
+            "verification_forwards": 496,
+            "verification_rows": 496,
+            "verification_seconds": 14.481588993221521
+          },
+          "exact": 8,
+          "same_as_k1": 8,
+          "proposed": 0,
+          "accepted": 0,
+          "verification_request_rounds": 496,
+          "mean_emitted_per_request_round": 1.0,
+          "target_forwards": 496,
+          "target_rows_per_output": 1.0,
+          "acceptance_by_depth": [],
+          "repeat_decode_tok_s": [
+            29.792143411266352,
+            30.076562336251442
+          ]
+        },
+        "mtp_k1_graph": {
+          "decode_tok_s": 26.2995521730644,
+          "e2e_tok_s": 23.788855603133467,
+          "decode_seconds": 18.85963672446087,
+          "counts_rank0": {
+            "draft_forwards": 280,
+            "draft_batch_calls": 280,
+            "draft_requests": 280,
+            "draft_seconds": 1.4098755125887692,
+            "draft_extend_pairs": 2384,
+            "verification_forwards": 292,
+            "verification_rows": 572,
+            "verification_seconds": 15.800813931971788
+          },
+          "exact": 8,
+          "same_as_k1": 8,
+          "proposed": 280,
+          "accepted": 204,
+          "verification_request_rounds": 292,
+          "mean_emitted_per_request_round": 1.6986301369863013,
+          "target_forwards": 292,
+          "target_rows_per_output": 1.153225806451613,
+          "acceptance_by_depth": [
+            {
+              "depth": 1,
+              "proposed_rounds": 280,
+              "reached_rounds": 280,
+              "accepted_rounds": 204,
+              "joint_accept_pct": 72.85714285714286,
+              "conditional_accept_pct": 72.85714285714286
+            }
+          ],
+          "repeat_decode_tok_s": [
+            26.248360027676327,
+            26.350944388609765
+          ],
+          "vs_k1_pct": 0.0,
+          "vs_native_pct": -20.103536632090137
+        },
+        "mtp_k2_graph": {
+          "decode_tok_s": 23.670481502975043,
+          "e2e_tok_s": 21.573687222722953,
+          "decode_seconds": 20.954368838574737,
+          "counts_rank0": {
+            "draft_forwards": 436,
+            "draft_batch_calls": 222,
+            "draft_requests": 222,
+            "draft_seconds": 1.9139308212324977,
+            "draft_extend_pairs": 2600,
+            "verification_forwards": 228,
+            "verification_rows": 664,
+            "verification_seconds": 17.703355603851378
+          },
+          "exact": 8,
+          "same_as_k1": 8,
+          "proposed": 436,
+          "accepted": 268,
+          "verification_request_rounds": 228,
+          "mean_emitted_per_request_round": 2.175438596491228,
+          "target_forwards": 228,
+          "target_rows_per_output": 1.3387096774193548,
+          "acceptance_by_depth": [
+            {
+              "depth": 1,
+              "proposed_rounds": 222,
+              "reached_rounds": 222,
+              "accepted_rounds": 154,
+              "joint_accept_pct": 69.36936936936937,
+              "conditional_accept_pct": 69.36936936936937
+            },
+            {
+              "depth": 2,
+              "proposed_rounds": 214,
+              "reached_rounds": 148,
+              "accepted_rounds": 114,
+              "joint_accept_pct": 53.271028037383175,
+              "conditional_accept_pct": 77.02702702702703
+            }
+          ],
+          "repeat_decode_tok_s": [
+            23.49347663787396,
+            23.850173800598064
+          ],
+          "vs_k1_pct": -9.996636645326639,
+          "vs_native_pct": -28.090495767446587
+        },
+        "mtp_k4_graph": {
+          "decode_tok_s": 19.54421181859716,
+          "e2e_tok_s": 18.267015628473477,
+          "decode_seconds": 25.37835777690634,
+          "counts_rank0": {
+            "draft_forwards": 664,
+            "draft_batch_calls": 172,
+            "draft_requests": 172,
+            "draft_seconds": 2.614881840068847,
+            "draft_extend_pairs": 2856,
+            "verification_forwards": 180,
+            "verification_rows": 844,
+            "verification_seconds": 21.752199425827712
+          },
+          "exact": 8,
+          "same_as_k1": 8,
+          "proposed": 664,
+          "accepted": 316,
+          "verification_request_rounds": 180,
+          "mean_emitted_per_request_round": 2.7555555555555555,
+          "target_forwards": 180,
+          "target_rows_per_output": 1.7016129032258065,
+          "acceptance_by_depth": [
+            {
+              "depth": 1,
+              "proposed_rounds": 172,
+              "reached_rounds": 172,
+              "accepted_rounds": 120,
+              "joint_accept_pct": 69.76744186046511,
+              "conditional_accept_pct": 69.76744186046511
+            },
+            {
+              "depth": 2,
+              "proposed_rounds": 166,
+              "reached_rounds": 114,
+              "accepted_rounds": 96,
+              "joint_accept_pct": 57.83132530120482,
+              "conditional_accept_pct": 84.21052631578948
+            },
+            {
+              "depth": 3,
+              "proposed_rounds": 164,
+              "reached_rounds": 94,
+              "accepted_rounds": 62,
+              "joint_accept_pct": 37.80487804878049,
+              "conditional_accept_pct": 65.95744680851064
+            },
+            {
+              "depth": 4,
+              "proposed_rounds": 162,
+              "reached_rounds": 62,
+              "accepted_rounds": 38,
+              "joint_accept_pct": 23.45679012345679,
+              "conditional_accept_pct": 61.29032258064516
+            }
+          ],
+          "repeat_decode_tok_s": [
+            19.494972181833543,
+            19.593700820286777
+          ],
+          "vs_k1_pct": -25.68614214422236,
+          "vs_native_pct": -40.62585578097801
+        }
+      },
+      "measured_generations": 80,
+      "measured_output_tokens": 2560
+    },
+    {
+      "name": "batched_c4",
+      "args": {
+        "tp": 2,
+        "capacity": 4,
+        "tokens": 64,
+        "repeats": 2,
+        "port": 2544,
+        "backend": "batched",
+        "oracle": false,
+        "batch_draft": false,
+        "compare_fused_gdn": false,
+        "mtp_steps": [
+          1,
+          2,
+          4
+        ],
+        "output": "benchmarks/qwen35_mtp_k_20261107/batched_c4"
+      },
+      "rates": {
+        "native_graph": {
+          "decode_tok_s": 120.32894928143529,
+          "e2e_tok_s": 99.27575638287458,
+          "decode_seconds": 8.377036498859525,
+          "counts_rank0": {
+            "native_target_forwards": 252,
+            "native_target_rows": 1008
+          },
+          "exact": 8,
+          "same_as_k1": 4,
+          "proposed": 0,
+          "accepted": 0,
+          "verification_request_rounds": 0,
+          "mean_emitted_per_request_round": null,
+          "target_forwards": 252,
+          "target_rows_per_output": 1.0,
+          "acceptance_by_depth": [],
+          "repeat_decode_tok_s": [
+            120.2299928110717,
+            120.42806878016067
+          ]
+        },
+        "no_draft_fused_graph": {
+          "decode_tok_s": 85.7601742717568,
+          "e2e_tok_s": 74.69787741632337,
+          "decode_seconds": 11.753707458730787,
+          "counts_rank0": {
+            "verification_forwards": 252,
+            "verification_rows": 1008,
+            "verification_seconds": 10.422266859095544
+          },
+          "exact": 8,
+          "same_as_k1": 4,
+          "proposed": 0,
+          "accepted": 0,
+          "verification_request_rounds": 1008,
+          "mean_emitted_per_request_round": 1.0,
+          "target_forwards": 252,
+          "target_rows_per_output": 1.0,
+          "acceptance_by_depth": [],
+          "repeat_decode_tok_s": [
+            86.13434182871725,
+            85.38924342206771
+          ]
+        },
+        "mtp_k1_graph": {
+          "decode_tok_s": 102.59448390713307,
+          "e2e_tok_s": 87.01229757124399,
+          "decode_seconds": 9.825089630670846,
+          "counts_rank0": {
+            "draft_forwards": 144,
+            "draft_batch_calls": 144,
+            "draft_requests": 546,
+            "draft_seconds": 0.930016512516886,
+            "draft_extend_pairs": 2900,
+            "verification_forwards": 144,
+            "verification_rows": 1100,
+            "verification_seconds": 7.9128302009776235
+          },
+          "exact": 4,
+          "same_as_k1": 8,
+          "proposed": 546,
+          "accepted": 454,
+          "verification_request_rounds": 554,
+          "mean_emitted_per_request_round": 1.8194945848375452,
+          "target_forwards": 144,
+          "target_rows_per_output": 1.0912698412698412,
+          "acceptance_by_depth": [
+            {
+              "depth": 1,
+              "proposed_rounds": 546,
+              "reached_rounds": 546,
+              "accepted_rounds": 454,
+              "joint_accept_pct": 83.15018315018315,
+              "conditional_accept_pct": 83.15018315018315
+            }
+          ],
+          "repeat_decode_tok_s": [
+            103.47676053874761,
+            101.72712523712106
+          ],
+          "vs_k1_pct": 0.0,
+          "vs_native_pct": -14.738319814314494
+        },
+        "mtp_k2_graph": {
+          "decode_tok_s": 109.17110850993515,
+          "e2e_tok_s": 91.72460127060103,
+          "decode_seconds": 9.233212099410594,
+          "counts_rank0": {
+            "draft_forwards": 210,
+            "draft_batch_calls": 106,
+            "draft_requests": 404,
+            "draft_seconds": 1.2263604821637273,
+            "draft_extend_pairs": 3292,
+            "verification_forwards": 106,
+            "verification_rows": 1206,
+            "verification_seconds": 7.2734843804501
+          },
+          "exact": 4,
+          "same_as_k1": 8,
+          "proposed": 798,
+          "accepted": 600,
+          "verification_request_rounds": 408,
+          "mean_emitted_per_request_round": 2.4705882352941178,
+          "target_forwards": 106,
+          "target_rows_per_output": 1.1964285714285714,
+          "acceptance_by_depth": [
+            {
+              "depth": 1,
+              "proposed_rounds": 404,
+              "reached_rounds": 404,
+              "accepted_rounds": 342,
+              "joint_accept_pct": 84.65346534653466,
+              "conditional_accept_pct": 84.65346534653466
+            },
+            {
+              "depth": 2,
+              "proposed_rounds": 394,
+              "reached_rounds": 332,
+              "accepted_rounds": 258,
+              "joint_accept_pct": 65.48223350253807,
+              "conditional_accept_pct": 77.71084337349397
+            }
+          ],
+          "repeat_decode_tok_s": [
+            108.371393905398,
+            109.9827136688053
+          ],
+          "vs_k1_pct": 6.41031013787754,
+          "vs_native_pct": -9.27278168564678
+        },
+        "mtp_k4_graph": {
+          "decode_tok_s": 99.96967047177318,
+          "e2e_tok_s": 85.28742655151554,
+          "decode_seconds": 10.0830581439659,
+          "counts_rank0": {
+            "draft_forwards": 326,
+            "draft_batch_calls": 84,
+            "draft_requests": 302,
+            "draft_seconds": 1.6984468405134976,
+            "draft_extend_pairs": 3762,
+            "verification_forwards": 86,
+            "verification_rows": 1486,
+            "verification_seconds": 7.790860323701054
+          },
+          "exact": 4,
+          "same_as_k1": 4,
+          "proposed": 1180,
+          "accepted": 702,
+          "verification_request_rounds": 306,
+          "mean_emitted_per_request_round": 3.2941176470588234,
+          "target_forwards": 86,
+          "target_rows_per_output": 1.4742063492063493,
+          "acceptance_by_depth": [
+            {
+              "depth": 1,
+              "proposed_rounds": 302,
+              "reached_rounds": 302,
+              "accepted_rounds": 252,
+              "joint_accept_pct": 83.44370860927152,
+              "conditional_accept_pct": 83.44370860927152
+            },
+            {
+              "depth": 2,
+              "proposed_rounds": 298,
+              "reached_rounds": 248,
+              "accepted_rounds": 200,
+              "joint_accept_pct": 67.11409395973155,
+              "conditional_accept_pct": 80.64516129032258
+            },
+            {
+              "depth": 3,
+              "proposed_rounds": 292,
+              "reached_rounds": 194,
+              "accepted_rounds": 142,
+              "joint_accept_pct": 48.63013698630137,
+              "conditional_accept_pct": 73.19587628865979
+            },
+            {
+              "depth": 4,
+              "proposed_rounds": 288,
+              "reached_rounds": 142,
+              "accepted_rounds": 108,
+              "joint_accept_pct": 37.5,
+              "conditional_accept_pct": 76.05633802816901
+            }
+          ],
+          "repeat_decode_tok_s": [
+            99.63017825353171,
+            100.31148425653512
+          ],
+          "vs_k1_pct": -2.5584352446626935,
+          "vs_native_pct": -16.919684690376656
+        }
+      },
+      "measured_generations": 80,
+      "measured_output_tokens": 5120
+    }
+  ],
+  "measured_generations": 160,
+  "measured_output_tokens": 7680
+}

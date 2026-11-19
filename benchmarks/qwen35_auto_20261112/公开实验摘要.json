@@ -1,0 +1,5584 @@
+{
+  "model": "Qwen3.5-27B",
+  "precision": "BF16 activations/weights, FP32 GDN S",
+  "hardware": "A100-SXM4-80GB",
+  "metric": "offline simultaneous-burst E2E output tokens/s; includes prefill; profiler excluded",
+  "selection_note": "28 settings excluded because vLLM repeat outputs differed; surviving settings are a selected subset, not a full unbiased matrix",
+  "cases": [
+    {
+      "id": "smoke_TP2_C1_I32_O8_N1_R0",
+      "tp": 2,
+      "capacity": 1,
+      "input": 32,
+      "output": 8,
+      "requests": 1,
+      "kind": "smoke",
+      "repeats": 1,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 10.0286842424047,
+        "vllm_output_tok_s": 37.26358441841936,
+        "lumina_over_vllm": 0.269128276276276,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 8,
+            "tokens": 8
+          }
+        ],
+        "exact_sequences": 1,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "smoke_TP1_C1_I32_O8_N1_R0",
+      "tp": 1,
+      "capacity": 1,
+      "input": 32,
+      "output": 8,
+      "requests": 1,
+      "kind": "smoke",
+      "repeats": 1,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 11.404587522429104,
+        "vllm_output_tok_s": 21.440995941695263,
+        "lumina_over_vllm": 0.531905679822044,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 8,
+            "tokens": 8
+          }
+        ],
+        "exact_sequences": 1,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "smoke_TP4_C1_I32_O8_N1_R0",
+      "tp": 4,
+      "capacity": 1,
+      "input": 32,
+      "output": 8,
+      "requests": 1,
+      "kind": "smoke",
+      "repeats": 1,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 10.27622631538798,
+        "vllm_output_tok_s": 48.03077007637873,
+        "lumina_over_vllm": 0.2139508964575559,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 8,
+            "tokens": 8
+          }
+        ],
+        "exact_sequences": 1,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "smoke_TP8_C1_I32_O8_N1_R0",
+      "tp": 8,
+      "capacity": 1,
+      "input": 32,
+      "output": 8,
+      "requests": 1,
+      "kind": "smoke",
+      "repeats": 1,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 12.574683564242292,
+        "vllm_output_tok_s": 56.12126953968507,
+        "lumina_over_vllm": 0.22406270683791904,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 8,
+            "tokens": 8
+          }
+        ],
+        "exact_sequences": 1,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP2_C1_I128_O128_N1_R0",
+      "tp": 2,
+      "capacity": 1,
+      "input": 128,
+      "output": 128,
+      "requests": 1,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 30.913984051484945,
+        "vllm_output_tok_s": 48.87573782012786,
+        "lumina_over_vllm": 0.6325016343539277,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 1,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP2_C8_I128_O128_N8_R0",
+      "tp": 2,
+      "capacity": 8,
+      "input": 128,
+      "output": 128,
+      "requests": 8,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP2_C32_I128_O128_N32_R0",
+      "tp": 2,
+      "capacity": 32,
+      "input": 128,
+      "output": 128,
+      "requests": 32,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 451.01017436553695,
+        "vllm_output_tok_s": 1073.2844491774426,
+        "lumina_over_vllm": 0.42021495299888845,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "1",
+            "exact": false,
+            "common_prefix": 124,
+            "tokens": 128
+          },
+          {
+            "id": "2",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "3",
+            "exact": false,
+            "common_prefix": 3,
+            "tokens": 128
+          },
+          {
+            "id": "4",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "5",
+            "exact": false,
+            "common_prefix": 6,
+            "tokens": 128
+          },
+          {
+            "id": "6",
+            "exact": false,
+            "common_prefix": 3,
+            "tokens": 128
+          },
+          {
+            "id": "7",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "8",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "9",
+            "exact": false,
+            "common_prefix": 56,
+            "tokens": 128
+          },
+          {
+            "id": "10",
+            "exact": false,
+            "common_prefix": 13,
+            "tokens": 128
+          },
+          {
+            "id": "11",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "12",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "13",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "14",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "15",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "16",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "17",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "18",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "19",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "20",
+            "exact": false,
+            "common_prefix": 5,
+            "tokens": 128
+          },
+          {
+            "id": "21",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "22",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "23",
+            "exact": false,
+            "common_prefix": 5,
+            "tokens": 128
+          },
+          {
+            "id": "24",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "25",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "26",
+            "exact": false,
+            "common_prefix": 63,
+            "tokens": 128
+          },
+          {
+            "id": "27",
+            "exact": false,
+            "common_prefix": 88,
+            "tokens": 128
+          },
+          {
+            "id": "28",
+            "exact": false,
+            "common_prefix": 110,
+            "tokens": 128
+          },
+          {
+            "id": "29",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "30",
+            "exact": false,
+            "common_prefix": 31,
+            "tokens": 128
+          },
+          {
+            "id": "31",
+            "exact": false,
+            "common_prefix": 52,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 9,
+        "sequences": 32,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP2_C128_I128_O128_N128_R0",
+      "tp": 2,
+      "capacity": 128,
+      "input": 128,
+      "output": 128,
+      "requests": 128,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP2_C1_I2048_O128_N1_R0",
+      "tp": 2,
+      "capacity": 1,
+      "input": 2048,
+      "output": 128,
+      "requests": 1,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 27.77182178804051,
+        "vllm_output_tok_s": 45.58337232265886,
+        "lumina_over_vllm": 0.6092533389469195,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 1,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP2_C8_I2048_O128_N8_R0",
+      "tp": 2,
+      "capacity": 8,
+      "input": 2048,
+      "output": 128,
+      "requests": 8,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 107.84347661445908,
+        "vllm_output_tok_s": 208.8004893400696,
+        "lumina_over_vllm": 0.5164905357995419,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "1",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "2",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "3",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "4",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "5",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "6",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "7",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 1,
+        "sequences": 8,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP2_C32_I2048_O128_N32_R0",
+      "tp": 2,
+      "capacity": 32,
+      "input": 2048,
+      "output": 128,
+      "requests": 32,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 156.71692723558974,
+        "vllm_output_tok_s": 343.534637176928,
+        "lumina_over_vllm": 0.4561895956793347,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "1",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "2",
+            "exact": false,
+            "common_prefix": 4,
+            "tokens": 128
+          },
+          {
+            "id": "3",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "4",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "5",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "6",
+            "exact": false,
+            "common_prefix": 73,
+            "tokens": 128
+          },
+          {
+            "id": "7",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "8",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "9",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "10",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "11",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "12",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "13",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "14",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "15",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "16",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "17",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "18",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "19",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "20",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "21",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "22",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "23",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "24",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "25",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "26",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "27",
+            "exact": false,
+            "common_prefix": 38,
+            "tokens": 128
+          },
+          {
+            "id": "28",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "29",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "30",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "31",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 11,
+        "sequences": 32,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP2_C128_I2048_O128_N128_R0",
+      "tp": 2,
+      "capacity": 128,
+      "input": 2048,
+      "output": 128,
+      "requests": 128,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 191.0450530198549,
+        "vllm_output_tok_s": 392.0989014949714,
+        "lumina_over_vllm": 0.48723689939311143,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "1",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "2",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "3",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "4",
+            "exact": false,
+            "common_prefix": 6,
+            "tokens": 128
+          },
+          {
+            "id": "5",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "6",
+            "exact": false,
+            "common_prefix": 73,
+            "tokens": 128
+          },
+          {
+            "id": "7",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "8",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "9",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "10",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "11",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "12",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "13",
+            "exact": false,
+            "common_prefix": 62,
+            "tokens": 128
+          },
+          {
+            "id": "14",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "15",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "16",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "17",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "18",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "19",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "20",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "21",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "22",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "23",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "24",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "25",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "26",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "27",
+            "exact": false,
+            "common_prefix": 16,
+            "tokens": 128
+          },
+          {
+            "id": "28",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "29",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "30",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "31",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "32",
+            "exact": false,
+            "common_prefix": 87,
+            "tokens": 128
+          },
+          {
+            "id": "33",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "34",
+            "exact": false,
+            "common_prefix": 19,
+            "tokens": 128
+          },
+          {
+            "id": "35",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "36",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "37",
+            "exact": false,
+            "common_prefix": 75,
+            "tokens": 128
+          },
+          {
+            "id": "38",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "39",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "40",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "41",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "42",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "43",
+            "exact": false,
+            "common_prefix": 20,
+            "tokens": 128
+          },
+          {
+            "id": "44",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "45",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "46",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "47",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "48",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "49",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "50",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "51",
+            "exact": false,
+            "common_prefix": 77,
+            "tokens": 128
+          },
+          {
+            "id": "52",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "53",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "54",
+            "exact": false,
+            "common_prefix": 75,
+            "tokens": 128
+          },
+          {
+            "id": "55",
+            "exact": false,
+            "common_prefix": 20,
+            "tokens": 128
+          },
+          {
+            "id": "56",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "57",
+            "exact": false,
+            "common_prefix": 38,
+            "tokens": 128
+          },
+          {
+            "id": "58",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "59",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "60",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "61",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "62",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "63",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "64",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "65",
+            "exact": false,
+            "common_prefix": 10,
+            "tokens": 128
+          },
+          {
+            "id": "66",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "67",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "68",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "69",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "70",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "71",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "72",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "73",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "74",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "75",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "76",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "77",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "78",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "79",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "80",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "81",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "82",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "83",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "84",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "85",
+            "exact": false,
+            "common_prefix": 74,
+            "tokens": 128
+          },
+          {
+            "id": "86",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "87",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "88",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "89",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "90",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "91",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "92",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "93",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "94",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "95",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "96",
+            "exact": false,
+            "common_prefix": 20,
+            "tokens": 128
+          },
+          {
+            "id": "97",
+            "exact": false,
+            "common_prefix": 32,
+            "tokens": 128
+          },
+          {
+            "id": "98",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "99",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "100",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "101",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "102",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "103",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "104",
+            "exact": false,
+            "common_prefix": 6,
+            "tokens": 128
+          },
+          {
+            "id": "105",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "106",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "107",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "108",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "109",
+            "exact": false,
+            "common_prefix": 57,
+            "tokens": 128
+          },
+          {
+            "id": "110",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "111",
+            "exact": false,
+            "common_prefix": 9,
+            "tokens": 128
+          },
+          {
+            "id": "112",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "113",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "114",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "115",
+            "exact": false,
+            "common_prefix": 84,
+            "tokens": 128
+          },
+          {
+            "id": "116",
+            "exact": false,
+            "common_prefix": 19,
+            "tokens": 128
+          },
+          {
+            "id": "117",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "118",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "119",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "120",
+            "exact": false,
+            "common_prefix": 77,
+            "tokens": 128
+          },
+          {
+            "id": "121",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "122",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "123",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "124",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "125",
+            "exact": false,
+            "common_prefix": 6,
+            "tokens": 128
+          },
+          {
+            "id": "126",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "127",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 49,
+        "sequences": 128,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP2_C1_I128_O512_N1_R0",
+      "tp": 2,
+      "capacity": 1,
+      "input": 128,
+      "output": 512,
+      "requests": 1,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 31.89653237710471,
+        "vllm_output_tok_s": 49.69025425634798,
+        "lumina_over_vllm": 0.6419072080523697,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 145,
+            "tokens": 512
+          }
+        ],
+        "exact_sequences": 0,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP2_C8_I128_O512_N8_R0",
+      "tp": 2,
+      "capacity": 8,
+      "input": 128,
+      "output": 512,
+      "requests": 8,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP2_C32_I128_O512_N32_R0",
+      "tp": 2,
+      "capacity": 32,
+      "input": 128,
+      "output": 512,
+      "requests": 32,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP2_C128_I128_O512_N128_R0",
+      "tp": 2,
+      "capacity": 128,
+      "input": 128,
+      "output": 512,
+      "requests": 128,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP4_C1_I128_O128_N1_R0",
+      "tp": 4,
+      "capacity": 1,
+      "input": 128,
+      "output": 128,
+      "requests": 1,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 38.17788924073382,
+        "vllm_output_tok_s": 81.35531193733149,
+        "lumina_over_vllm": 0.46927346637356004,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 1,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP4_C8_I128_O128_N8_R0",
+      "tp": 4,
+      "capacity": 8,
+      "input": 128,
+      "output": 128,
+      "requests": 8,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 234.81744710453586,
+        "vllm_output_tok_s": 554.148763374244,
+        "lumina_over_vllm": 0.42374442139817975,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "1",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "2",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "3",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "4",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "5",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "6",
+            "exact": false,
+            "common_prefix": 3,
+            "tokens": 128
+          },
+          {
+            "id": "7",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 1,
+        "sequences": 8,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP4_C32_I128_O128_N32_R0",
+      "tp": 4,
+      "capacity": 32,
+      "input": 128,
+      "output": 128,
+      "requests": 32,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 526.3273217978151,
+        "vllm_output_tok_s": 1624.3406655412102,
+        "lumina_over_vllm": 0.32402520786638644,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "1",
+            "exact": false,
+            "common_prefix": 120,
+            "tokens": 128
+          },
+          {
+            "id": "2",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "3",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "4",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "5",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "6",
+            "exact": false,
+            "common_prefix": 3,
+            "tokens": 128
+          },
+          {
+            "id": "7",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "8",
+            "exact": false,
+            "common_prefix": 3,
+            "tokens": 128
+          },
+          {
+            "id": "9",
+            "exact": false,
+            "common_prefix": 56,
+            "tokens": 128
+          },
+          {
+            "id": "10",
+            "exact": false,
+            "common_prefix": 13,
+            "tokens": 128
+          },
+          {
+            "id": "11",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "12",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "13",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "14",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "15",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "16",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "17",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "18",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "19",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "20",
+            "exact": false,
+            "common_prefix": 102,
+            "tokens": 128
+          },
+          {
+            "id": "21",
+            "exact": false,
+            "common_prefix": 30,
+            "tokens": 128
+          },
+          {
+            "id": "22",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "23",
+            "exact": false,
+            "common_prefix": 76,
+            "tokens": 128
+          },
+          {
+            "id": "24",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "25",
+            "exact": false,
+            "common_prefix": 67,
+            "tokens": 128
+          },
+          {
+            "id": "26",
+            "exact": false,
+            "common_prefix": 67,
+            "tokens": 128
+          },
+          {
+            "id": "27",
+            "exact": false,
+            "common_prefix": 5,
+            "tokens": 128
+          },
+          {
+            "id": "28",
+            "exact": false,
+            "common_prefix": 45,
+            "tokens": 128
+          },
+          {
+            "id": "29",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "30",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "31",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 8,
+        "sequences": 32,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP4_C128_I128_O128_N128_R0",
+      "tp": 4,
+      "capacity": 128,
+      "input": 128,
+      "output": 128,
+      "requests": 128,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP4_C1_I2048_O128_N1_R0",
+      "tp": 4,
+      "capacity": 1,
+      "input": 2048,
+      "output": 128,
+      "requests": 1,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 34.851690115350756,
+        "vllm_output_tok_s": 77.18509123118122,
+        "lumina_over_vllm": 0.4515339628344104,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 0,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP4_C8_I2048_O128_N8_R0",
+      "tp": 4,
+      "capacity": 8,
+      "input": 2048,
+      "output": 128,
+      "requests": 8,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP4_C32_I2048_O128_N32_R0",
+      "tp": 4,
+      "capacity": 32,
+      "input": 2048,
+      "output": 128,
+      "requests": 32,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP4_C128_I2048_O128_N128_R0",
+      "tp": 4,
+      "capacity": 128,
+      "input": 2048,
+      "output": 128,
+      "requests": 128,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 262.3073146849682,
+        "vllm_output_tok_s": 640.2016009384735,
+        "lumina_over_vllm": 0.4097261148682714,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "1",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "2",
+            "exact": false,
+            "common_prefix": 41,
+            "tokens": 128
+          },
+          {
+            "id": "3",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "4",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "5",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "6",
+            "exact": false,
+            "common_prefix": 73,
+            "tokens": 128
+          },
+          {
+            "id": "7",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "8",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "9",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "10",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "11",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "12",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "13",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "14",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "15",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "16",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "17",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "18",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "19",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "20",
+            "exact": false,
+            "common_prefix": 31,
+            "tokens": 128
+          },
+          {
+            "id": "21",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "22",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "23",
+            "exact": false,
+            "common_prefix": 11,
+            "tokens": 128
+          },
+          {
+            "id": "24",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "25",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "26",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "27",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "28",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "29",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "30",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "31",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "32",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "33",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "34",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "35",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "36",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "37",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "38",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "39",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "40",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "41",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "42",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "43",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "44",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "45",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "46",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "47",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "48",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "49",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "50",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "51",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "52",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "53",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "54",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "55",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "56",
+            "exact": false,
+            "common_prefix": 114,
+            "tokens": 128
+          },
+          {
+            "id": "57",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "58",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "59",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "60",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "61",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "62",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "63",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "64",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "65",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "66",
+            "exact": false,
+            "common_prefix": 16,
+            "tokens": 128
+          },
+          {
+            "id": "67",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "68",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "69",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "70",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "71",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "72",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "73",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "74",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "75",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "76",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "77",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "78",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "79",
+            "exact": false,
+            "common_prefix": 20,
+            "tokens": 128
+          },
+          {
+            "id": "80",
+            "exact": false,
+            "common_prefix": 38,
+            "tokens": 128
+          },
+          {
+            "id": "81",
+            "exact": false,
+            "common_prefix": 75,
+            "tokens": 128
+          },
+          {
+            "id": "82",
+            "exact": false,
+            "common_prefix": 79,
+            "tokens": 128
+          },
+          {
+            "id": "83",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "84",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "85",
+            "exact": false,
+            "common_prefix": 14,
+            "tokens": 128
+          },
+          {
+            "id": "86",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "87",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "88",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "89",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "90",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "91",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "92",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "93",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "94",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "95",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "96",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "97",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "98",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "99",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "100",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "101",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "102",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "103",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "104",
+            "exact": false,
+            "common_prefix": 6,
+            "tokens": 128
+          },
+          {
+            "id": "105",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "106",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "107",
+            "exact": false,
+            "common_prefix": 20,
+            "tokens": 128
+          },
+          {
+            "id": "108",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "109",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "110",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "111",
+            "exact": false,
+            "common_prefix": 93,
+            "tokens": 128
+          },
+          {
+            "id": "112",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "113",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "114",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "115",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "116",
+            "exact": false,
+            "common_prefix": 20,
+            "tokens": 128
+          },
+          {
+            "id": "117",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "118",
+            "exact": false,
+            "common_prefix": 63,
+            "tokens": 128
+          },
+          {
+            "id": "119",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "120",
+            "exact": false,
+            "common_prefix": 17,
+            "tokens": 128
+          },
+          {
+            "id": "121",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "122",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "123",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "124",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "125",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "126",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "127",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 40,
+        "sequences": 128,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP4_C1_I128_O512_N1_R0",
+      "tp": 4,
+      "capacity": 1,
+      "input": 128,
+      "output": 512,
+      "requests": 1,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 39.76265243959072,
+        "vllm_output_tok_s": 84.28720005764121,
+        "lumina_over_vllm": 0.47175196723106666,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 97,
+            "tokens": 512
+          }
+        ],
+        "exact_sequences": 0,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP4_C8_I128_O512_N8_R0",
+      "tp": 4,
+      "capacity": 8,
+      "input": 128,
+      "output": 512,
+      "requests": 8,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 278.7886325738421,
+        "vllm_output_tok_s": 591.8204465049881,
+        "lumina_over_vllm": 0.4710696195446373,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 97,
+            "tokens": 512
+          },
+          {
+            "id": "1",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 512
+          },
+          {
+            "id": "2",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 512
+          },
+          {
+            "id": "3",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 512
+          },
+          {
+            "id": "4",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 512
+          },
+          {
+            "id": "5",
+            "exact": false,
+            "common_prefix": 125,
+            "tokens": 512
+          },
+          {
+            "id": "6",
+            "exact": false,
+            "common_prefix": 3,
+            "tokens": 512
+          },
+          {
+            "id": "7",
+            "exact": false,
+            "common_prefix": 16,
+            "tokens": 512
+          }
+        ],
+        "exact_sequences": 0,
+        "sequences": 8,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP4_C32_I128_O512_N32_R0",
+      "tp": 4,
+      "capacity": 32,
+      "input": 128,
+      "output": 512,
+      "requests": 32,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP4_C128_I128_O512_N128_R0",
+      "tp": 4,
+      "capacity": 128,
+      "input": 128,
+      "output": 512,
+      "requests": 128,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP1_C1_I128_O128_N1_R0",
+      "tp": 1,
+      "capacity": 1,
+      "input": 128,
+      "output": 128,
+      "requests": 1,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 22.7195711190112,
+        "vllm_output_tok_s": 28.34186403009496,
+        "lumina_over_vllm": 0.8016258597136131,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 1,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP1_C8_I128_O128_N8_R0",
+      "tp": 1,
+      "capacity": 8,
+      "input": 128,
+      "output": 128,
+      "requests": 8,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP1_C32_I128_O128_N32_R0",
+      "tp": 1,
+      "capacity": 32,
+      "input": 128,
+      "output": 128,
+      "requests": 32,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 419.3706970328406,
+        "vllm_output_tok_s": 619.3734254664215,
+        "lumina_over_vllm": 0.6770886185777698,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "1",
+            "exact": false,
+            "common_prefix": 124,
+            "tokens": 128
+          },
+          {
+            "id": "2",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "3",
+            "exact": false,
+            "common_prefix": 3,
+            "tokens": 128
+          },
+          {
+            "id": "4",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "5",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "6",
+            "exact": false,
+            "common_prefix": 3,
+            "tokens": 128
+          },
+          {
+            "id": "7",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "8",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "9",
+            "exact": false,
+            "common_prefix": 56,
+            "tokens": 128
+          },
+          {
+            "id": "10",
+            "exact": false,
+            "common_prefix": 52,
+            "tokens": 128
+          },
+          {
+            "id": "11",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "12",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "13",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "14",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "15",
+            "exact": false,
+            "common_prefix": 115,
+            "tokens": 128
+          },
+          {
+            "id": "16",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "17",
+            "exact": false,
+            "common_prefix": 34,
+            "tokens": 128
+          },
+          {
+            "id": "18",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "19",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "20",
+            "exact": false,
+            "common_prefix": 5,
+            "tokens": 128
+          },
+          {
+            "id": "21",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "22",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "23",
+            "exact": false,
+            "common_prefix": 104,
+            "tokens": 128
+          },
+          {
+            "id": "24",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "25",
+            "exact": false,
+            "common_prefix": 67,
+            "tokens": 128
+          },
+          {
+            "id": "26",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "27",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "28",
+            "exact": false,
+            "common_prefix": 40,
+            "tokens": 128
+          },
+          {
+            "id": "29",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "30",
+            "exact": false,
+            "common_prefix": 88,
+            "tokens": 128
+          },
+          {
+            "id": "31",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 9,
+        "sequences": 32,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP1_C128_I128_O128_N128_R0",
+      "tp": 1,
+      "capacity": 128,
+      "input": 128,
+      "output": 128,
+      "requests": 128,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP1_C1_I2048_O128_N1_R0",
+      "tp": 1,
+      "capacity": 1,
+      "input": 2048,
+      "output": 128,
+      "requests": 1,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 19.6284071212882,
+        "vllm_output_tok_s": 26.364539903385868,
+        "lumina_over_vllm": 0.7445002716989352,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 0,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP1_C8_I2048_O128_N8_R0",
+      "tp": 1,
+      "capacity": 8,
+      "input": 2048,
+      "output": 128,
+      "requests": 8,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 75.38813327654871,
+        "vllm_output_tok_s": 122.1061495309589,
+        "lumina_over_vllm": 0.6173983338769907,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "1",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "2",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "3",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "4",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "5",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "6",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "7",
+            "exact": false,
+            "common_prefix": 119,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 3,
+        "sequences": 8,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP1_C32_I2048_O128_N32_R0",
+      "tp": 1,
+      "capacity": 32,
+      "input": 2048,
+      "output": 128,
+      "requests": 32,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 110.43044653872549,
+        "vllm_output_tok_s": 196.67823473447854,
+        "lumina_over_vllm": 0.5614777186088226,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "1",
+            "exact": false,
+            "common_prefix": 107,
+            "tokens": 128
+          },
+          {
+            "id": "2",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "3",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "4",
+            "exact": false,
+            "common_prefix": 6,
+            "tokens": 128
+          },
+          {
+            "id": "5",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "6",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "7",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "8",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "9",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "10",
+            "exact": false,
+            "common_prefix": 20,
+            "tokens": 128
+          },
+          {
+            "id": "11",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "12",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "13",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "14",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "15",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "16",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "17",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "18",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "19",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "20",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "21",
+            "exact": false,
+            "common_prefix": 3,
+            "tokens": 128
+          },
+          {
+            "id": "22",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "23",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "24",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "25",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "26",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "27",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "28",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "29",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "30",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "31",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 8,
+        "sequences": 32,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP1_C128_I2048_O128_N128_R0",
+      "tp": 1,
+      "capacity": 128,
+      "input": 2048,
+      "output": 128,
+      "requests": 128,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 120.94538951038554,
+        "vllm_output_tok_s": 212.21385411349303,
+        "lumina_over_vllm": 0.569922213682163,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "1",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "2",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "3",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "4",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "5",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "6",
+            "exact": false,
+            "common_prefix": 73,
+            "tokens": 128
+          },
+          {
+            "id": "7",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "8",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "9",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "10",
+            "exact": false,
+            "common_prefix": 20,
+            "tokens": 128
+          },
+          {
+            "id": "11",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "12",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "13",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "14",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "15",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "16",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "17",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "18",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "19",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "20",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "21",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "22",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "23",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "24",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "25",
+            "exact": false,
+            "common_prefix": 13,
+            "tokens": 128
+          },
+          {
+            "id": "26",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "27",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "28",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "29",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "30",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "31",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "32",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "33",
+            "exact": false,
+            "common_prefix": 32,
+            "tokens": 128
+          },
+          {
+            "id": "34",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "35",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "36",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "37",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "38",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "39",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "40",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "41",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "42",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "43",
+            "exact": false,
+            "common_prefix": 34,
+            "tokens": 128
+          },
+          {
+            "id": "44",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "45",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "46",
+            "exact": false,
+            "common_prefix": 10,
+            "tokens": 128
+          },
+          {
+            "id": "47",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "48",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "49",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "50",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "51",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "52",
+            "exact": false,
+            "common_prefix": 12,
+            "tokens": 128
+          },
+          {
+            "id": "53",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "54",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "55",
+            "exact": false,
+            "common_prefix": 20,
+            "tokens": 128
+          },
+          {
+            "id": "56",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "57",
+            "exact": false,
+            "common_prefix": 74,
+            "tokens": 128
+          },
+          {
+            "id": "58",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "59",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "60",
+            "exact": false,
+            "common_prefix": 6,
+            "tokens": 128
+          },
+          {
+            "id": "61",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "62",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "63",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "64",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "65",
+            "exact": false,
+            "common_prefix": 10,
+            "tokens": 128
+          },
+          {
+            "id": "66",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "67",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "68",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "69",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "70",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "71",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "72",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "73",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "74",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "75",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "76",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "77",
+            "exact": false,
+            "common_prefix": 14,
+            "tokens": 128
+          },
+          {
+            "id": "78",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "79",
+            "exact": false,
+            "common_prefix": 20,
+            "tokens": 128
+          },
+          {
+            "id": "80",
+            "exact": false,
+            "common_prefix": 90,
+            "tokens": 128
+          },
+          {
+            "id": "81",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "82",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "83",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "84",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "85",
+            "exact": false,
+            "common_prefix": 104,
+            "tokens": 128
+          },
+          {
+            "id": "86",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "87",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "88",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "89",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "90",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "91",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "92",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "93",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "94",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "95",
+            "exact": false,
+            "common_prefix": 12,
+            "tokens": 128
+          },
+          {
+            "id": "96",
+            "exact": false,
+            "common_prefix": 20,
+            "tokens": 128
+          },
+          {
+            "id": "97",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "98",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "99",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "100",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "101",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "102",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "103",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "104",
+            "exact": false,
+            "common_prefix": 6,
+            "tokens": 128
+          },
+          {
+            "id": "105",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "106",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "107",
+            "exact": false,
+            "common_prefix": 116,
+            "tokens": 128
+          },
+          {
+            "id": "108",
+            "exact": false,
+            "common_prefix": 20,
+            "tokens": 128
+          },
+          {
+            "id": "109",
+            "exact": false,
+            "common_prefix": 98,
+            "tokens": 128
+          },
+          {
+            "id": "110",
+            "exact": false,
+            "common_prefix": 6,
+            "tokens": 128
+          },
+          {
+            "id": "111",
+            "exact": false,
+            "common_prefix": 9,
+            "tokens": 128
+          },
+          {
+            "id": "112",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "113",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "114",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "115",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "116",
+            "exact": false,
+            "common_prefix": 110,
+            "tokens": 128
+          },
+          {
+            "id": "117",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "118",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "119",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "120",
+            "exact": false,
+            "common_prefix": 40,
+            "tokens": 128
+          },
+          {
+            "id": "121",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "122",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "123",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "124",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "125",
+            "exact": false,
+            "common_prefix": 5,
+            "tokens": 128
+          },
+          {
+            "id": "126",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "127",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 38,
+        "sequences": 128,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP1_C1_I128_O512_N1_R0",
+      "tp": 1,
+      "capacity": 1,
+      "input": 128,
+      "output": 512,
+      "requests": 1,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 22.891967756308134,
+        "vllm_output_tok_s": 28.79843968580724,
+        "lumina_over_vllm": 0.7949030574593944,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 145,
+            "tokens": 512
+          }
+        ],
+        "exact_sequences": 0,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP1_C8_I128_O512_N8_R0",
+      "tp": 1,
+      "capacity": 8,
+      "input": 128,
+      "output": 512,
+      "requests": 8,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP1_C32_I128_O512_N32_R0",
+      "tp": 1,
+      "capacity": 32,
+      "input": 128,
+      "output": 512,
+      "requests": 32,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP1_C128_I128_O512_N128_R0",
+      "tp": 1,
+      "capacity": 128,
+      "input": 128,
+      "output": 512,
+      "requests": 128,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP8_C1_I128_O128_N1_R0",
+      "tp": 8,
+      "capacity": 1,
+      "input": 128,
+      "output": 128,
+      "requests": 1,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 40.19363589612009,
+        "vllm_output_tok_s": 108.91863347619498,
+        "lumina_over_vllm": 0.3690244232168477,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 97,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 0,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP8_C8_I128_O128_N8_R0",
+      "tp": 8,
+      "capacity": 8,
+      "input": 128,
+      "output": 128,
+      "requests": 8,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP8_C32_I128_O128_N32_R0",
+      "tp": 8,
+      "capacity": 32,
+      "input": 128,
+      "output": 128,
+      "requests": 32,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP8_C128_I128_O128_N128_R0",
+      "tp": 8,
+      "capacity": 128,
+      "input": 128,
+      "output": 128,
+      "requests": 128,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP8_C1_I2048_O128_N1_R0",
+      "tp": 8,
+      "capacity": 1,
+      "input": 2048,
+      "output": 128,
+      "requests": 1,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 37.57938104784832,
+        "vllm_output_tok_s": 104.93889962550043,
+        "lumina_over_vllm": 0.35810725271524035,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 1,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP8_C8_I2048_O128_N8_R0",
+      "tp": 8,
+      "capacity": 8,
+      "input": 2048,
+      "output": 128,
+      "requests": 8,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP8_C32_I2048_O128_N32_R0",
+      "tp": 8,
+      "capacity": 32,
+      "input": 2048,
+      "output": 128,
+      "requests": 32,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP8_C128_I2048_O128_N128_R0",
+      "tp": 8,
+      "capacity": 128,
+      "input": 2048,
+      "output": 128,
+      "requests": 128,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 301.42984865354833,
+        "vllm_output_tok_s": 908.1885488358494,
+        "lumina_over_vllm": 0.3319022784860397,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "1",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "2",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "3",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "4",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "5",
+            "exact": false,
+            "common_prefix": 6,
+            "tokens": 128
+          },
+          {
+            "id": "6",
+            "exact": false,
+            "common_prefix": 73,
+            "tokens": 128
+          },
+          {
+            "id": "7",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "8",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "9",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "10",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "11",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "12",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "13",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "14",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "15",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "16",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "17",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "18",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "19",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "20",
+            "exact": false,
+            "common_prefix": 99,
+            "tokens": 128
+          },
+          {
+            "id": "21",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "22",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "23",
+            "exact": false,
+            "common_prefix": 14,
+            "tokens": 128
+          },
+          {
+            "id": "24",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "25",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "26",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "27",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "28",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "29",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "30",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "31",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "32",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "33",
+            "exact": false,
+            "common_prefix": 8,
+            "tokens": 128
+          },
+          {
+            "id": "34",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "35",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "36",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "37",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "38",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "39",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "40",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "41",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "42",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "43",
+            "exact": false,
+            "common_prefix": 20,
+            "tokens": 128
+          },
+          {
+            "id": "44",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "45",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "46",
+            "exact": false,
+            "common_prefix": 12,
+            "tokens": 128
+          },
+          {
+            "id": "47",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "48",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "49",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "50",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "51",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "52",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "53",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "54",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "55",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "56",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "57",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "58",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "59",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "60",
+            "exact": false,
+            "common_prefix": 12,
+            "tokens": 128
+          },
+          {
+            "id": "61",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "62",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "63",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "64",
+            "exact": false,
+            "common_prefix": 79,
+            "tokens": 128
+          },
+          {
+            "id": "65",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "66",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "67",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "68",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "69",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "70",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "71",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "72",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "73",
+            "exact": false,
+            "common_prefix": 20,
+            "tokens": 128
+          },
+          {
+            "id": "74",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "75",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "76",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "77",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "78",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "79",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "80",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "81",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "82",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "83",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "84",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "85",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "86",
+            "exact": false,
+            "common_prefix": 18,
+            "tokens": 128
+          },
+          {
+            "id": "87",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "88",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "89",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "90",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "91",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "92",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "93",
+            "exact": false,
+            "common_prefix": 75,
+            "tokens": 128
+          },
+          {
+            "id": "94",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "95",
+            "exact": false,
+            "common_prefix": 14,
+            "tokens": 128
+          },
+          {
+            "id": "96",
+            "exact": false,
+            "common_prefix": 38,
+            "tokens": 128
+          },
+          {
+            "id": "97",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "98",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "99",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "100",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "101",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "102",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "103",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "104",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "105",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "106",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "107",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "108",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "109",
+            "exact": false,
+            "common_prefix": 98,
+            "tokens": 128
+          },
+          {
+            "id": "110",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "111",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "112",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "113",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "114",
+            "exact": false,
+            "common_prefix": 14,
+            "tokens": 128
+          },
+          {
+            "id": "115",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "116",
+            "exact": false,
+            "common_prefix": 40,
+            "tokens": 128
+          },
+          {
+            "id": "117",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "118",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "119",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "120",
+            "exact": false,
+            "common_prefix": 116,
+            "tokens": 128
+          },
+          {
+            "id": "121",
+            "exact": false,
+            "common_prefix": 89,
+            "tokens": 128
+          },
+          {
+            "id": "122",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "123",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "124",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "125",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "126",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "127",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 40,
+        "sequences": 128,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP8_C1_I128_O512_N1_R0",
+      "tp": 8,
+      "capacity": 1,
+      "input": 128,
+      "output": 512,
+      "requests": 1,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 41.95941566993191,
+        "vllm_output_tok_s": 113.49457976105727,
+        "lumina_over_vllm": 0.36970413704575167,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 97,
+            "tokens": 512
+          }
+        ],
+        "exact_sequences": 0,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "graph_TP8_C8_I128_O512_N8_R0",
+      "tp": 8,
+      "capacity": 8,
+      "input": 128,
+      "output": 512,
+      "requests": 8,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP8_C32_I128_O512_N32_R0",
+      "tp": 8,
+      "capacity": 32,
+      "input": 128,
+      "output": 512,
+      "requests": 32,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP8_C128_I128_O512_N128_R0",
+      "tp": 8,
+      "capacity": 128,
+      "input": 128,
+      "output": 512,
+      "requests": 128,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "graph_TP2_C32_I128_O128_N32_R1",
+      "tp": 2,
+      "capacity": 32,
+      "input": 128,
+      "output": 128,
+      "requests": 32,
+      "kind": "graph",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "eager_TP2_C1_I128_O128_N1_R0",
+      "tp": 2,
+      "capacity": 1,
+      "input": 128,
+      "output": 128,
+      "requests": 1,
+      "kind": "eager",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 10.007186077281023,
+        "vllm_output_tok_s": 15.247483142884581,
+        "lumina_over_vllm": 0.6563172415738,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 0,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "eager_TP2_C32_I128_O128_N32_R0",
+      "tp": 2,
+      "capacity": 32,
+      "input": 128,
+      "output": 128,
+      "requests": 32,
+      "kind": "eager",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "eager_TP2_C1_I2048_O128_N1_R0",
+      "tp": 2,
+      "capacity": 1,
+      "input": 2048,
+      "output": 128,
+      "requests": 1,
+      "kind": "eager",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 9.817631280471087,
+        "vllm_output_tok_s": 15.020966006504256,
+        "lumina_over_vllm": 0.6535951999505183,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 1,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "eager_TP2_C32_I2048_O128_N32_R0",
+      "tp": 2,
+      "capacity": 32,
+      "input": 2048,
+      "output": 128,
+      "requests": 32,
+      "kind": "eager",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 131.4321799600329,
+        "vllm_output_tok_s": 216.91957478948885,
+        "lumina_over_vllm": 0.6059028102354626,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "1",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "2",
+            "exact": false,
+            "common_prefix": 4,
+            "tokens": 128
+          },
+          {
+            "id": "3",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "4",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "5",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "6",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "7",
+            "exact": false,
+            "common_prefix": 7,
+            "tokens": 128
+          },
+          {
+            "id": "8",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "9",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "10",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "11",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "12",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "13",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "14",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "15",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "16",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "17",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "18",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "19",
+            "exact": false,
+            "common_prefix": 1,
+            "tokens": 128
+          },
+          {
+            "id": "20",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "21",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "22",
+            "exact": false,
+            "common_prefix": 75,
+            "tokens": 128
+          },
+          {
+            "id": "23",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "24",
+            "exact": false,
+            "common_prefix": 75,
+            "tokens": 128
+          },
+          {
+            "id": "25",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "26",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "27",
+            "exact": false,
+            "common_prefix": 2,
+            "tokens": 128
+          },
+          {
+            "id": "28",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "29",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          },
+          {
+            "id": "30",
+            "exact": true,
+            "common_prefix": 128,
+            "tokens": 128
+          },
+          {
+            "id": "31",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 128
+          }
+        ],
+        "exact_sequences": 9,
+        "sequences": 32,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "eager_TP2_C1_I128_O512_N1_R0",
+      "tp": 2,
+      "capacity": 1,
+      "input": 128,
+      "output": 512,
+      "requests": 1,
+      "kind": "eager",
+      "repeats": 3,
+      "status": "succeeded",
+      "comparison": {
+        "lumina_output_tok_s": 9.831181002356386,
+        "vllm_output_tok_s": 15.905357102186853,
+        "lumina_over_vllm": 0.6181050157625623,
+        "output_pairs": [
+          {
+            "id": "0",
+            "exact": false,
+            "common_prefix": 0,
+            "tokens": 512
+          }
+        ],
+        "exact_sequences": 0,
+        "sequences": 1,
+        "note": "output equivalence is reported separately; this is not HF logits/task-quality validation"
+      }
+    },
+    {
+      "id": "eager_TP2_C32_I128_O512_N32_R0",
+      "tp": 2,
+      "capacity": 32,
+      "input": 128,
+      "output": 512,
+      "requests": 32,
+      "kind": "eager",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "tail_TP2_C32_I128_O32_N1024_R0",
+      "tp": 2,
+      "capacity": 32,
+      "input": 128,
+      "output": 32,
+      "requests": 1024,
+      "kind": "tail",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "tail_TP4_C32_I128_O32_N1024_R0",
+      "tp": 4,
+      "capacity": 32,
+      "input": 128,
+      "output": 32,
+      "requests": 1024,
+      "kind": "tail",
+      "repeats": 3,
+      "status": "failed"
+    },
+    {
+      "id": "profile_TP2_C1_I128_O32_N1_R0",
+      "tp": 2,
+      "capacity": 1,
+      "input": 128,
+      "output": 32,
+      "requests": 1,
+      "kind": "profile",
+      "repeats": 1,
+      "status": "pending"
+    },
+    {
+      "id": "profile_TP2_C32_I128_O32_N32_R0",
+      "tp": 2,
+      "capacity": 32,
+      "input": 128,
+      "output": 32,
+      "requests": 32,
+      "kind": "profile",
+      "repeats": 1,
+      "status": "pending"
+    },
+    {
+      "id": "profile_TP2_C1_I2048_O32_N1_R0",
+      "tp": 2,
+      "capacity": 1,
+      "input": 2048,
+      "output": 32,
+      "requests": 1,
+      "kind": "profile",
+      "repeats": 1,
+      "status": "pending"
+    },
+    {
+      "id": "profile_TP2_C32_I2048_O32_N32_R0",
+      "tp": 2,
+      "capacity": 32,
+      "input": 2048,
+      "output": 32,
+      "requests": 32,
+      "kind": "profile",
+      "repeats": 1,
+      "status": "pending"
+    }
+  ]
+}

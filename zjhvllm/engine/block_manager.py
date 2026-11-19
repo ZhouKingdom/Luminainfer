@@ -25,7 +25,8 @@ class Block:
 
 class BlockManager:
 
-    def __init__(self, num_blocks: int, block_size: int):
+    def __init__(self, num_blocks: int, block_size: int, enable_prefix_caching: bool = True):
+        self.enable_prefix_caching = enable_prefix_caching
         self.block_size = block_size
         self.blocks: list[Block] = [Block(i) for i in range(num_blocks)]
         self.hash_to_block_id: dict[int, int] = dict()
@@ -56,6 +57,8 @@ class BlockManager:
         self.free_block_ids.append(block_id)
 
     def can_allocate(self, seq: Sequence) -> int:
+        if not self.enable_prefix_caching:
+            return 0 if len(self.free_block_ids) >= seq.num_blocks else -1
         h = -1
         num_cached_blocks = 0
         num_new_blocks = seq.num_blocks
@@ -108,6 +111,8 @@ class BlockManager:
             seq.block_table.append(self._allocate_block())
 
     def hash_blocks(self, seq: Sequence):
+        if not self.enable_prefix_caching:
+            return
         start = seq.num_cached_tokens // self.block_size
         end = (seq.num_cached_tokens + seq.num_scheduled_tokens) // self.block_size
         if start == end: return
@@ -118,3 +123,26 @@ class BlockManager:
             h = self.compute_hash(token_ids, h)
             block.update(h, token_ids)
             self.hash_to_block_id[h] = block.block_id
+
+    def reserve_private(self, seq: Sequence, num_tokens: int):
+        """Reserve a verification window atomically; shared/prefix pages forbidden."""
+        if self.enable_prefix_caching or any(self.blocks[b].ref_count != 1 for b in seq.block_table):
+            raise ValueError("verification requires private pages with prefix caching disabled")
+        if num_tokens < seq.num_cached_tokens:
+            raise ValueError("cannot reserve less than the committed prefix")
+        needed = max(0, (num_tokens + self.block_size - 1) // self.block_size - len(seq.block_table))
+        if needed > len(self.free_block_ids):
+            raise MemoryError("insufficient KV pages for verification")
+        for _ in range(needed):
+            seq.block_table.append(self._allocate_block())
+
+    def truncate_private(self, seq: Sequence, num_blocks: int):
+        """Unpublish rejected suffix pages; stale KV bytes become unreachable."""
+        if not 0 <= num_blocks <= len(seq.block_table):
+            raise ValueError("invalid private page truncation")
+        if self.enable_prefix_caching or any(self.blocks[b].ref_count != 1 for b in seq.block_table):
+            raise ValueError("truncation requires private pages")
+        for block_id in reversed(seq.block_table[num_blocks:]):
+            self.blocks[block_id].ref_count = 0
+            self._deallocate_block(block_id)
+        del seq.block_table[num_blocks:]

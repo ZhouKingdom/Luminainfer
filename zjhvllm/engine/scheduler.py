@@ -2,7 +2,7 @@
 # 文件功能：调度器（Scheduler）
 # 核心职责：
 #   1. 管理等待（WAITING）和运行（RUNNING）两个队列，负责序列的生命周期流转。
-#   2. 执行两阶段调度：先调度 Prefill（预填充），再调度 Decode（逐字生成）。
+#   2. 分别组织 Prefill 和 Decode，交替执行，兼顾新请求与生成中的请求。
 #   3. 结合 BlockManager（显存管理器）处理显存分配、释放以及抢占（Preemption）。
 #   4. 实现分块预填充（Chunked Prefill）和抢占式调度，保证显存安全。
 # =============================================================================
@@ -13,6 +13,7 @@ from time import perf_counter
 from zjhvllm.config import Config
 from zjhvllm.engine.sequence import Sequence, SequenceStatus
 from zjhvllm.engine.block_manager import BlockManager
+from zjhvllm.engine.adaptive_prefill import AdaptivePrefill
 
 
 class Scheduler:
@@ -24,7 +25,18 @@ class Scheduler:
         self.eos = config.eos                            # 结束符（End-of-Sequence）的 Token ID
         self.block_size = config.kvcache_block_size      # 逻辑块大小（每个块含多少个 Token）
         # 初始化显存块管理器，负责物理块的分配、释放和缓存共享
-        self.block_manager = BlockManager(config.num_kvcache_blocks, config.kvcache_block_size)
+        # linear attention 递归状态 slot 分配器（Qwen3.5 的 Gated DeltaNet）
+        self.has_linear_state = config.num_state_slots > 0
+        # KV 前缀不能独立复用：linear 层还需要对应前缀的 S/conv 快照。
+        self.block_manager = BlockManager(
+            config.num_kvcache_blocks, config.kvcache_block_size,
+            enable_prefix_caching=not self.has_linear_state,
+        )
+        self.scheduling_policy = getattr(config, "scheduling_policy", "alternating")
+        self.active_prefill_tokens = getattr(config, "active_prefill_tokens", 512)
+        self.adaptive = AdaptivePrefill(getattr(config,"adaptive_tpot_seconds",.1),
+            getattr(config,"adaptive_ttft_seconds",2.),getattr(config,"adaptive_min_prefill_tokens",128))
+        self.free_state_slots = deque(range(max(0, config.num_state_slots)))
         
         # 等待队列（WAITING）：存放尚未调度的序列（包括新请求和被抢占的序列）
         self.waiting: deque[Sequence] = deque()
@@ -41,6 +53,8 @@ class Scheduler:
 
     def add(self, seq: Sequence):
         """向调度器提交一个新序列，追加到等待队列末尾"""
+        if seq.arrival_time is None:
+            seq.arrival_time = perf_counter()
         self.waiting.append(seq)
 
     def schedule(self) -> tuple[list[Sequence], bool]:
@@ -50,7 +64,7 @@ class Scheduler:
                  scheduled_seqs: 本轮调度的序列列表
                  is_prefill: True 表示本轮执行 Prefill 阶段，False 表示执行 Decode 阶段
 
-        调度顺序（与 vLLM 一致）：Decode 优先，Prefill 次之。
+        默认调度：Decode 优先进入，再与等待中的 Prefill 交替。
           1. 先调度 RUNNING 队列（Decode），保证已投入的序列持续产出 Token，
              避免新到的 Prefill 请求无限期推迟已有请求的输出（饿死）。
           2. 再调度 WAITING 队列（Prefill，支持 Chunked Prefill）。
@@ -58,6 +72,7 @@ class Scheduler:
         保证 Decode 优先的同时，WAITING 中的新请求也不会被饿死。
         """
         seqs: list[Sequence] = []
+        self.adaptive.last_decision = {}
 
         # ---- 交替调度：若 running 与 waiting 并存且本轮轮到 Prefill，先做 Prefill ----
         if self.waiting and self.running and self._prefill_turn:
@@ -101,6 +116,15 @@ class Scheduler:
           - 被截断的序列仍留在 waiting 队列头部，下一轮优先续算剩余部分。
         :return: 本轮调度的序列列表（可能为空）
         """
+        token_budget = self.max_num_batched_tokens
+        # Cold start keeps the full budget. The cap is an admission bound,
+        # not a wall-clock deadline or kernel preemption mechanism.
+        if self.scheduling_policy == "bounded" and self.running:
+            token_budget = min(token_budget, self.active_prefill_tokens)
+        if self.scheduling_policy == "adaptive" and self.running:
+            token_budget = self.adaptive.choose(self.waiting, self.running, token_budget, perf_counter())
+            if not token_budget:
+                return []
         scheduled_seqs: list[Sequence] = []
         num_batched_tokens = 0
 
@@ -108,16 +132,22 @@ class Scheduler:
             seq = self.waiting[0]                 # 窥视队首，但不弹出
 
             # 计算当前 Batch 剩余的 Token 配额
-            remaining = self.max_num_batched_tokens - num_batched_tokens
+            remaining = token_budget - num_batched_tokens
             if remaining <= 0:
                 break                             # 配额已耗尽，无法再塞入更多 Token
 
             # ---------- 计算本次可以处理多少 Token ----------
             if not seq.block_table:
-                # 情况 A：全新序列。先检查显存，返回可复用的缓存块数量
+                # 情况 A：全新序列。检查递归状态 slot 和 KV 块容量，
+                # 两项资源都可用后才分配。
+                if self.has_linear_state and seq.state_slot is None:
+                    if not self.free_state_slots:
+                        break                       # 无可用递归状态 slot
                 num_cached_blocks = self.block_manager.can_allocate(seq)
                 if num_cached_blocks == -1:
                     break                         # 显存不足，停止调度新序列
+                if self.has_linear_state and seq.state_slot is None:
+                    seq.state_slot = self.free_state_slots.popleft()
                 # 需要计算的 Token 数量 = 总长度 - 已经缓存的 Token 数
                 num_tokens = seq.num_tokens - num_cached_blocks * self.block_size
                 # 正式分配显存块（此时序列尚无块表）
@@ -165,9 +195,18 @@ class Scheduler:
                     victim = self.running.pop()
                     self.preempt(victim)
                 else:
-                    # 如果运行队列只有当前序列了，那就只能抢占自己
-                    self.preempt(seq)
-                    break  # 抢占自己后，这个序列就不参与本轮调度了，跳出内层循环
+                    # A partially prefetched waiting request can hold the last
+                    # freeable page. Reclaim it before preempting the only
+                    # decoder, otherwise the enlarged decoder can block the
+                    # waiting head while that partial request holds its pages.
+                    partial = next((candidate for candidate in reversed(self.waiting)
+                                    if candidate.block_table), None)
+                    if partial is not None:
+                        self.waiting.remove(partial)
+                        self.preempt(partial)
+                    else:
+                        self.preempt(seq)
+                        break
 
             # Python 的 while...else 语法：
             # 如果 while 循环没有被 break 打断（即成功 append），则执行 else 分支
@@ -194,6 +233,7 @@ class Scheduler:
         seq.status = SequenceStatus.WAITING    # 状态降级为等待
         seq.is_prefill = True                  # 重置为预填充标记（重新进来时需要重算 Prefix）
         self.block_manager.deallocate(seq)     # 释放其占用的所有物理块（递减引用计数）
+        self._release_state_slot(seq)          # 释放递归状态 slot（重算 prefill 时重新分配）
         self.waiting.appendleft(seq)           # 放回等待队列头部（优先被重新调度）
 
     def postprocess(self, seqs: list[Sequence], token_ids: list[int], is_prefill: bool):
@@ -241,5 +281,43 @@ class Scheduler:
                 seq.status = SequenceStatus.FINISHED          # 标记为已完成
                 seq.finished_time = perf_counter()            # 记录完成时刻
                 self.block_manager.deallocate(seq)            # 立即释放显存
+                self._release_state_slot(seq)                 # 释放递归状态 slot
                 self.running.remove(seq)                      # 从运行队列中移除
         return stream
+
+    def admit_prefilled(self, seq: Sequence, first_token: int, restore):
+        """Reserve private prompt pages, restore, then publish to decode.
+
+        A restore failure leaves both queues and the free-page count unchanged.
+        The pending first token is appended AFTER allocating prompt pages: at a
+        block boundary the regular decode scheduler allocates its new page.
+        """
+        if self.has_linear_state:
+            raise NotImplementedError("P-D v1 requires a KV-only model")
+        if seq.block_table or seq.num_cached_tokens or seq.num_completion_tokens:
+            raise ValueError("admission requires a fresh prompt sequence")
+        needed=seq.num_blocks+int(seq.num_tokens%self.block_size==0)
+        if len(self.block_manager.free_block_ids)<needed:
+            raise RuntimeError("P-D admission rejected: insufficient KV capacity")
+        self.block_manager.allocate(seq,0)  # private pages; never overwrite a shared prefix
+        try:
+            restore(seq)
+            seq.num_scheduled_tokens=seq.num_tokens
+            self.block_manager.hash_blocks(seq)
+            seq.num_cached_tokens=seq.num_tokens
+            seq.num_scheduled_tokens=0
+            seq.append_token(first_token)
+        except BaseException:
+            self.block_manager.deallocate(seq)
+            seq.num_scheduled_tokens=0
+            raise
+        seq.is_prefill=False
+        seq.status=SequenceStatus.RUNNING
+        self.running.append(seq)
+
+    def _release_state_slot(self, seq: Sequence):
+        """释放序列占用的递归状态 slot，归还到空闲池。"""
+        if seq.state_slot is not None:
+            self.free_state_slots.append(seq.state_slot)
+            seq.state_slot = None
+            seq.state_ready = False

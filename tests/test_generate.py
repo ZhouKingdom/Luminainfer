@@ -125,3 +125,14 @@ def test_chunked_prefill_matches_hf(llm, hf_model, tokenizer):
     common = _common_prefix_len(ours, ref)
     print(f"\n[chunked prefill, {len(ids)} tokens] common_prefix={common}/{len(ref)}")
     assert common >= MIN_COMMON_PREFIX, f"chunked prefill 输出与参考不一致: ours={ours} ref={ref}"
+
+
+def test_batch_permutation_preserves_request_isolation(llm):
+    """Keep GEMM batch shapes fixed while changing neighbors and KV slot order."""
+    prompts=['Hello world','The weather is nice','Machine learning is']
+    sp=SamplingParams(greedy=True,max_tokens=16,ignore_eos=True)
+    reference=llm.generate(prompts,sp,use_tqdm=False)
+    for order in ([2,0,1],[1,2,0]):
+        outputs=llm.generate([prompts[i] for i in order],sp,use_tqdm=False)
+        for index,item in zip(order,outputs):
+            assert item['token_ids']==reference[index]['token_ids']

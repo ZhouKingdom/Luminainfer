@@ -5,11 +5,13 @@
 
 from zjhvllm.models.qwen3 import Qwen3ForCausalLM
 from zjhvllm.models.qwen3_moe import Qwen3MoeForCausalLM
+from zjhvllm.models.qwen3_5 import Qwen3_5ForCausalLM
 
 
 _MODEL_REGISTRY = {
     "qwen3": Qwen3ForCausalLM,
     "qwen3_moe": Qwen3MoeForCausalLM,
+    "qwen3_5_text": Qwen3_5ForCausalLM,
 }
 
 

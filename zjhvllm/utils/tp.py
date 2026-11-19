@@ -19,8 +19,8 @@ def set_tp(size: int, rank: int):
 
 
 def get_tp_size() -> int:
-    return _TP_SIZE if _TP_SIZE is not None else dist.get_world_size()
+    return _TP_SIZE if _TP_SIZE is not None else (dist.get_world_size() if dist.is_initialized() else 1)
 
 
 def get_tp_rank() -> int:
-    return _TP_RANK if _TP_RANK is not None else dist.get_rank()
+    return _TP_RANK if _TP_RANK is not None else (dist.get_rank() if dist.is_initialized() else 0)

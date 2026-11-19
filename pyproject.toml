@@ -4,7 +4,7 @@ version = "0.2.0"
 authors = [{ name = "zjh" }]
 license = "MIT"
 license-files = ["LICENSE"]
-readme = "README.md"
+readme = "项目说明.md"
 description = "a lightweight vLLM implementation built from scratch"
 requires-python = ">=3.10,<3.13"
 dependencies = [
@@ -16,7 +16,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/zjh/zjh-vllm"
+Homepage = "https://github.com/ZhouKingdom/Luminainfer"
 
 [project.optional-dependencies]
 dev = [
@@ -58,4 +58,3 @@ ignore = ["F722"]
 # 因此直接引用官方预编译 wheel，避免 uv sync 时现场编译。
 # 若 ghfast.top 不可用，可把下面 URL 换成不带 https://ghfast.top/ 前缀的 GitHub 直链。
 flash-attn = { url = "https://ghfast.top/https://github.com/Dao-AILab/flash-attention/releases/download/v2.8.3.post1/flash_attn-2.8.3.post1%2Bcu12torch2.8cxx11abiTRUE-cp312-cp312-linux_x86_64.whl" }
-

@@ -1,133 +1,102 @@
-# zjh-vllm
+# LuminaInfer
 
-一个从零实现的轻量级 LLM 推理引擎，参考 [vLLM](https://github.com/vllm-project/vllm) 的架构思想，用 PyTorch + Triton 手写核心算子。目标是理解并复现工业级推理引擎的关键技术。
+基于 PyTorch、Triton 和 NCCL 的轻量 LLM 推理引擎，Python 包名为 `zjhvllm`。当前聚焦 **Qwen3.5-27B 文本 BF16 多卡推理、可复现 benchmark 和 profiling**，以官方 vLLM 为外部基线。
 
-> 支持 Qwen3（dense）和 Qwen3-MoE（稀疏专家）架构，通过 `models/registry.py` 按 `model_type` 分发，可扩展其他模型家族。
+## 核心能力
 
-## 特性
-
-| 能力 | 说明 | 位置 |
-|---|---|---|
-| 连续批处理 (Continuous Batching) | chunked prefill + 抢占式调度，多请求共享一次前向 | `engine/scheduler.py` |
-| Paged Attention | 分块 KV cache，block table 索引，前缀缓存（hash 复用） | `engine/block_manager.py` |
-| 张量并行 (TP) | NCCL + 子进程，支持 tp=1..8 | `layers/linear.py` |
-| CUDA Graph 解码 | 按 batch 分桶捕获解码图，降低 launch 开销 | `engine/model_runner.py` |
-| 手写 Triton 采样器 | temperature/top_k/top_p/repetition_penalty + Gumbel-max + Philox 可复现 | `layers/sampler.py` |
-| Flash Attention | varlen（prefill）+ kvcache（decode） | `layers/attention.py` |
-| FP8 KV cache | e4m3 量化 + per-token scale，KV 显存减半 | `layers/attention.py` |
-| MoE（稀疏专家） | router + top-k 专家选择 + 稀疏激活 FFN | `layers/moe.py` |
-| 专家并行（EP） | 专家按卡分布 + all-to-all 路由（router replicated） | `layers/ep_moe.py` |
-
-## 环境
-
-```bash
-conda create -n lumina python=3.12
-conda activate lumina
-# 服务器不通外网时，先走端口转发代理：
-export http_proxy=http://127.0.0.1:17988 https_proxy=http://127.0.0.1:17988 all_proxy=http://127.0.0.1:17988 no_proxy=localhost,127.0.0.1
-pip install torch==2.8.0 triton transformers flash-attn xxhash
-pip install pytest fastapi uvicorn   # 测试 + 服务
-```
-
-依赖版本：`torch 2.8.0(+cu128)`、`triton 3.4.0`、`transformers`、`flash-attn 2.8.3.post1`（cxx11abiTRUE）、`xxhash`。
-
-> 注意：torch 2.8.0 用的是 `_GLIBCXX_USE_CXX11_ABI=True`，flash-attn 需选 `cxx11abiTRUE` 的 wheel。
-
-## 快速开始
-
-```bash
-# 示例（Qwen3-0.6B）
-python example.py
-
-# 压测（Qwen3-32B，需要 TP）
-python bench.py
-```
-
-模型路径：`~/huggingface/Qwen3-0.6B`（小模型，单卡即可）。`bench.py` 用 32B，需 `tensor_parallel_size=4`（单卡 KV cache 容不下 256 条并发序列，见 `OPTIMIZATION_ROADMAP.md`）。
-
-### FP8 KV cache
-
-```python
-from zjhvllm import LLM
-llm = LLM(model_path, kv_cache_dtype="fp8")  # 默认 "auto"=bf16
-```
-
-KV 用 e4m3 fp8 + per-token scale 存储，`flash-attn 2.x` 不支持 fp8 KV，因此 decode/prefill 读缓存时用 PyTorch 原生反量化 gather 成连续 bf16 再走 flash_attn。实测相同显存预算下 KV 容量翻倍（533 → 1062 blocks）。
-
-### MoE（稀疏专家）
-
-支持 Qwen3-MoE 架构（`model_type="qwen3_moe"`，经 `models/registry.py` 分发）：
-
-- 单卡版：`layers/moe.py` 的 `MoE`（router + top-k 专家选择 + 稀疏激活）。
-- 专家并行（EP）：`layers/moe.py` 的 `MoE` 在 `expert_parallel_size>1` 时走 all-to-all 路由（专家按卡分布、router replicated、权重按 rank 过滤加载）。
-- 已用真实模型 **Qwen3-30B-A3B**（128 专家 top-8，30B 总参/3B 激活）跑通：TP=4 和 **EP=8**（每卡 16 专家）输出一致。
-
-```python
-llm = LLM("path/to/Qwen3-30B-A3B", tensor_parallel_size=4)      # 纯 TP
-llm = LLM("path/to/Qwen3-30B-A3B", expert_parallel_size=8)      # 专家并行（num_key_value_heads=4 限制 TP≤4，上 8 卡需 EP）
-```
-
-EP 的设计见 [MOE_DESIGN.md](MOE_DESIGN.md)。
-
-## 正确性测试
-
-21 个测试覆盖：logits 与 HuggingFace 逐元素对齐、greedy/批处理/前缀缓存/chunked prefill/确定性、Triton 采样器与 numpy 参考对齐、fp8 KV cache、MoE 层与专家并行（EP）。
-
-```bash
-python -m pytest tests/ -v
-```
-
-测试设计要点（见 `tests/test_logits.py`、`tests/test_generate.py`）：
-- **logits 对齐**：zjhvllm 用 flash-attn、HF 用 SDPA，两者有 ~0.1~0.4 的数值噪声，用 `max_abs_diff < 1.0` 区分「噪声」和「真 bug」。
-- **greedy 近邻 tie**：当某步 top1-top2 gap 小于噪声时 argmax 会翻转、级联发散，这是预期行为。测试在分歧点验证 HF 的 top1-top2 gap 来区分近邻 tie 与真 bug。
-
-## OpenAI 兼容服务
-
-```bash
-python server.py --model ~/huggingface/Qwen3-0.6B --enforce-eager
-# 或 uvicorn server:app --host 0.0.0.0 --port 8000
-```
-
-端点：
-
-| 端点 | 说明 |
+| 方向 | 实现 |
 |---|---|
-| `GET /health` | 健康检查 |
-| `GET /v1/models` | 模型列表 |
-| `POST /v1/completions` | 文本补全（支持 `stream`） |
-| `POST /v1/chat/completions` | 对话补全（chat template + `stream`） |
+| 混合注意力 | 48 层 Gated DeltaNet + 16 层全注意力；按请求维护 FP32 递归状态与 BF16 卷积状态 |
+| 多卡推理 | TP1/2/4/8；GDN 头切分、词表并行、KV 头不足时复制 |
+| 执行与调度 | 分页 KV、分块 prefill、连续批处理、抢占重算、decode CUDA Graph |
+| 内核 | Triton GDN 扫描/递推、分页注意力及采样算子 |
+| 性能评估 | 统一 token-ID workload、逐请求 TTFT/TPOT/ITL/E2E、独立 vLLM 对照、Nsight 汇总 |
+
+已有 Qwen3 Dense、Qwen3-MoE 和 MTP 实验路径。**当前暂停 MTP 与量化研发**，不宣称它们已带来普通推理净加速。
+
+## 快速使用
+
+已验证的 Lumina 环境：Python 3.12、PyTorch 2.8.0+cu128、Triton 3.4.0、Transformers 5.20.1、FlashAttention 2.8.3.post1。FlashAttention wheel 须匹配 PyTorch/CUDA/ABI；不同版本组合需自行验证。
+
+准备环境和本地 Qwen3.5-27B 权重后，从项目根目录运行：
+
+```python
+from zjhvllm import LLM, SamplingParams
+
+
+def main():
+    llm = LLM(
+        '/path/to/Qwen3.5-27B',
+        tensor_parallel_size=2,
+        enable_mtp=False,
+        max_num_seqs=32,
+        max_model_len=4096,
+        max_num_batched_tokens=2048,
+        gpu_memory_utilization=.85,
+        enforce_eager=False,
+    )
+    try:
+        outputs = llm.generate(
+            ['解释混合注意力模型中的递归状态。'],
+            SamplingParams(greedy=True, max_tokens=128),
+            use_tqdm=False,
+        )
+        print(outputs)
+    finally:
+        llm.exit()
+
+
+if __name__ == '__main__':
+    main()
+```
 
 ```bash
-# 非流式
-curl -s http://127.0.0.1:8000/v1/completions -H 'Content-Type: application/json' \
-  -d '{"prompt":"The capital of France is","max_tokens":32,"temperature":0}'
-# 流式
-curl -sN http://127.0.0.1:8000/v1/completions -H 'Content-Type: application/json' \
-  -d '{"prompt":"Hi","max_tokens":16,"temperature":0,"stream":true}'
+CUDA_VISIBLE_DEVICES=0,1 PYTHONPATH=. python your_script.py
 ```
 
-架构：`zjhvllm/engine/async_llm_engine.py` 的异步引擎在后台线程跑 continuous batching 的 `step()` 循环，所有引擎访问集中在单线程（避免多线程竞争调度器/KV cache），HTTP 侧通过 thread-safe 队列提交请求、`loop.call_soon_threadsafe` 投递 token 流。
+## Benchmark 与 profiling
 
-## 目录结构
+官方对照环境独立安装 vLLM 0.26.0 / PyTorch 2.11.0，避免改变 Lumina 的依赖。以 BF16、相同输入、输出预算、TP、并发和物理 GPU 配对，预热与测量分离；profiling 不参与吞吐排名。
 
-```
-zjhvllm/
-  llm.py                 # LLM 入口（LLMEngine 子类）
-  config.py              # 配置
-  sampling_params.py     # 采样参数
-  engine/                # 调度 / 执行
-    scheduler.py         # 连续批处理调度
-    block_manager.py     # paged KV cache + 前缀缓存
-    model_runner.py      # 模型执行 + TP + CUDA graph + KV cache 分配
-    llm_engine.py        # 同步引擎（add_request / step / generate）
-    async_llm_engine.py  # 异步引擎（后台 step 循环 + 流式）
-    sequence.py
-  layers/                # attention / 线性 / norm / rope / sampler / 采样
-  models/qwen3.py        # Qwen3 模型
-tests/                   # 正确性测试
-server.py                # OpenAI 兼容服务
-bench.py / example.py    # 压测 / 示例
-benchmarks/              # 与官方 vLLM 的吞吐对比（见 benchmarks/README.md）
+截至 2026-11-19：原 65 组队列中 33 组通过配对验收、28 组因 vLLM 重复输出不一致被排除；4 组 profiling 已在修复后的独立队列完成。通过验收的配置只是子集，跨引擎输出也存在差异，不能据此宣称全面质量对齐或超过 vLLM。Profiling 采集成功不等于热点优化已完成。
+
+- [性能数据与验收边界](测试与性能.md)
+- [原性能矩阵汇总](benchmarks/qwen35_auto_20261112/实验汇总.md)
+- [Profiling 补跑汇总](benchmarks/qwen35_profile_retry_20261114/实验汇总.md)
+- [统一基准与复现说明](benchmarks/qwen35_baseline_20261112/基准与Profiling实施说明.md)
+
+例如先生成输入，再在各自环境执行 `run --engine lumina` / `run --engine vllm`，最后 `compare`：
+
+```bash
+PYTHONPATH=. python benchmarks/qwen35_baseline.py prepare \
+  --model /path/to/Qwen3.5-27B --requests 32 \
+  --input-tokens 128 --output-tokens 128 --output /tmp/workload.json
 ```
 
+脚本与文档中的 `/home/...` 路径是原实验机器配置，复现时替换为本机路径。后台监测脚本不会随克隆或导入自动启动。
 
+## 测试与代码
+
+无需加载模型的基准/监测 CPU 回归：
+
+```bash
+PYTHONPATH=. python -m pytest \
+  tests/test_qwen35_baseline.py tests/test_qwen35_profile_summary.py \
+  tests/test_watch_qwen35.py -q
+```
+
+GPU/真实模型测试需要相应权重、空闲 GPU 和兼容依赖，不应把上面的 CPU 子集视为全项目验收。HF 严格 raw logits 对齐仍未通过，历史 next-token argmax 一致不等价于完整质量保证。
+
+```text
+zjhvllm/engine/   调度、分页 KV、混合状态、分布式执行与 Graph
+zjhvllm/models/   Qwen3、Qwen3-MoE、Qwen3.5 及 MTP
+zjhvllm/layers/   注意力、GDN、并行算子与 Triton 内核
+tests/           CPU、CUDA、数值与分布式测试
+benchmarks/      基准、诊断脚本和精简报告
+```
+
+进一步阅读：[项目说明](项目说明.md)、[使用指南](使用指南.md)、[Qwen3.5 进度](Qwen3.5进度.md)。
+
+仓库提交源码、测试、脚本、精简报告与部分汇总；权重、缓存、完整源码快照、运行日志、完整 token 结果和大型 Nsight trace 保留在实验机器，不随 Git 上传。部分历史文档中的原始产物链接因此只在原机器可用。
+
+参考实现：[vLLM](https://github.com/vllm-project/vllm)、[SGLang](https://github.com/sgl-project/sglang)。本项目为独立实现，并非上述项目的官方版本。
